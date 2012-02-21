@@ -17,7 +17,7 @@
 (function(root) {
 
 	//-- Returns an object containing an existing and/or new sub objects representing a name hierarchy
-	root.namespace = function(path) {
+	root.namespace = function(path, fn) {
 		
 		var root = window;
 
@@ -27,30 +27,29 @@
 			var spaces = path.split('.');
 
 			//Set up the namespace objects
-			for (var i=0, len=spaces.length; i<len; i++) root = root[spaces[i]] || {extend: function(fn) {if (typeof fn === 'function') fn.call(this)}}
+			for (var i=0, len=spaces.length; i<len; i++) root = root[spaces[i]] || {extend: function(fn) {if (typeof fn === 'function') fn.call(this)}};
 		}
 		else {
 			root = path;
 		}
 
+		if (typeof fn === 'function') fn.call(root);
+
 		return root;
 	};
 
 	//-- Returns an empty object that can be extended
-	root.define = function(o, c) {
+	root.define = function(fn) {
 		
-			if (arguments.length === 1) c = o, o = null;
-			
-			if (o) F.prototype = new o();
-
-			F.prototype.extend = function(fn) {
-				if (typeof fn === 'function') fn.apply(this, arguments);
-			}
-
-			return F;
-
-			function F(){};
+		F.prototype.extend = function(fn) {
+			if (typeof fn === 'function') fn.apply(this, arguments);
 		}
+
+		if (typeof fn === 'function') fn.call(F);
+
+		return F;
+
+		function F(){};
 	}
 
 })(window);
@@ -59,21 +58,7 @@
 
 
 
-var tran = namespace('demo.transport');
-tran.extend(function() {
-	
-	this.dostuff = function() {
-		
-	}
 
-	this.Car = define('Car');
-	this.Car.extend(function) {
-		
-	}
-
-	this.Ferrari = define(Car,'Ferrari');
-
-})
 
 
 
