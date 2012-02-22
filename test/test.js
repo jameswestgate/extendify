@@ -1,4 +1,4 @@
-module("name tests");
+module("namespace tests");
 
 
 test("namespace", function() {
@@ -28,3 +28,123 @@ test("namespace", function() {
 	ok(window.alpha === space5, 'alpha object namespace returned');
 	
 });
+
+
+module("define tests");
+
+
+test("define", function() {
+
+	//Test definitions
+	var Person = define(function(name) {
+		this.name = name;
+	})
+
+	var Employee = define(Person, function(name) {
+		Person.call(this, name);
+
+		this.salary = 123;
+	});
+
+	Employee.prototype.extend(function(){
+		this.getBonus = function() {
+			return 500;
+		}
+	});
+
+	var Director = define(Employee, function(name) {
+
+		Employee.call(this, name);
+		this.options = 1000;
+	});
+
+	Director.prototype.extend(function() {
+		this.getBonus = function() {
+			return Employee.prototype.getBonus() * 10;
+		}
+	});	
+
+	//Create test objects
+	var person = new Person('John');
+	var employee = new Employee('Jack');
+	var director = new Director('James');
+
+	//Test types
+	ok(person instanceof Person, 'person is Person');
+	ok(employee instanceof Person, 'employee is Person');
+	ok(employee instanceof Employee, 'employee is Employee');
+
+	//Test constructors and properties
+	ok(person.name == 'John', 'person is called John');
+	ok(employee.name == 'Jack', 'employee is called Jack');
+	ok(employee.salary == 123, 'employee salary is 123');
+	ok(person.salary == null, 'person has no salary');
+
+	//Test inheritance
+	ok(director instanceof Person, 'director is Person');
+	ok(director instanceof Employee, 'director is Employee');
+	ok(director instanceof Director, 'director is Director');
+	ok(director.options == 1000, 'director has share options');
+	ok(director.salary == 123, 'director salary is 123');
+	ok(person.name == 'John', 'director is called James');
+
+	//Test overrides
+	ok(typeof person.getBonus == 'undefined', 'person bonus is undefined');
+	ok(employee.getBonus() == 500, 'employee bonus is 500.00');
+	ok(director.getBonus() == 5000, 'director bonus is 5000.00');
+	ok(Employee.prototype.getBonus.call(director) == 500, 'director original bonus is 500.00');
+
+})
+
+
+module('template tests');
+
+
+test('templ', function () {
+
+    //Simple tag
+    var il = { div: '' };
+    var out = templ(il);
+    ok(out == '<div></div>', 'Simple Tag: ' + out);
+
+    //Simple tag with attribute
+    il = { div: { style: 'z-order: 0'} };
+    out = templ(il);
+    ok(out == '<div style="z-order: 0"></div>', 'Simple tag with attribute: ' + out);
+
+    //Simple tag with class attribute
+    il = { div: { 'class': 'bacon'} };
+    out = templ(il);
+    ok(out == '<div class="bacon"></div>', 'Simple tag with class attribute: ' + out);
+
+    //Simple nested tag
+    il = { div: { p: 'Hello world'} };
+    out = templ(il);
+    ok(out == '<div><p>Hello world</p></div>', 'Simple nested tag: ' + out);
+
+    //Simple nested tag with style
+    il = { div: { p: { style: 'color: red', text: 'Hello world'}}};
+    out = templ(il);
+    ok(out == '<div><p style="color: red">Hello world</p></div>', 'Simple nested tag with style: ' + out);
+
+    //Complex nested Tag
+    il = { div: { style: 'z-order: 1', p: 'Hello world'} };
+    out = templ(il);
+    ok(out == '<div style="z-order: 1"><p>Hello world</p></div>', 'Complex nested Tag: ' + out);
+
+	il = {
+		html: {
+			head: {
+				title: 'Test Page'
+			},
+			body: [
+				{p: 'Test1'},
+				{p: 'Test2'}
+			]
+		}
+	};
+
+	out = templ(il);
+    ok(out == '<html><head><title>Test Page</title></head><body><p>Test1</p><p>Test2</p></body></html>', out);
+});
+
