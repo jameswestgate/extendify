@@ -105,7 +105,7 @@
 
 				//Set source. Add preconfigured extension if required
 				script.src = [scriptFolder, '/',  arg, scriptExt].join('');
-				head.appendChild(script);
+				document.head.appendChild(script);
 			}
 		}
 	};
