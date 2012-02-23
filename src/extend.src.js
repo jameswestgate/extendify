@@ -121,14 +121,19 @@
 
         for(var j=0,len2=tag.length; j<len2; j+=i) {
             elementTable[tag.substring(j, j+i)] = {open:0, closed:0};
-            $('#content').append('<p>' + tag.substring(j, j+i) + '</p>');
         }
     }
 
-    //Main parsing function
-    root.templ = function (il) {
+    //Type checking
+	root.type = function(e) {
+		if (typeof e === 'undefined') return 'undefined';
+		if (e=== null) return 'null';
+		return Object.prototype.toString.call(e).toLowerCase().replace('[object ','').replace(']','');
+	}
+
+    root.compose = function (il) {
         
-		output = []; //reset
+		output = [];
         parseIl(il, null);
         return output.join('');
     };
@@ -146,18 +151,20 @@
 
     //Parse each element in the template IL recursively
     function parseIl(il, parent) {
+        
+        var t = type(il);
 
-        if (typeof il === 'array') {
+        if (t === 'array') {
             
 			for (var i = 0, length = il.length; i < length; i++) {
                 parseIl(il[i], parent);
             }
         } 
-		else if (typeof il === 'function') {
+		else if (t === 'function') {
             parseIl(il(), parent);
 
         } 
-		else if (typeof il === 'object') {
+		else if (t === 'object') {
             
 			for (var key in il) {
 
@@ -211,7 +218,7 @@
             output.push(il);
         }
     }
-
+    
 })(window);
 
 

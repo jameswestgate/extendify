@@ -97,39 +97,39 @@ test("define", function() {
 })
 
 
-module('template tests');
+module('compose tests');
 
 
-test('templ', function () {
+test('compose', function () {
 
     //Simple tag
     var il = { div: '' };
-    var out = templ(il);
+    var out = compose(il);
     ok(out == '<div></div>', 'Simple Tag: ' + out);
 
     //Simple tag with attribute
     il = { div: { style: 'z-order: 0'} };
-    out = templ(il);
+    out = compose(il);
     ok(out == '<div style="z-order: 0"></div>', 'Simple tag with attribute: ' + out);
 
     //Simple tag with class attribute
     il = { div: { 'class': 'bacon'} };
-    out = templ(il);
+    out = compose(il);
     ok(out == '<div class="bacon"></div>', 'Simple tag with class attribute: ' + out);
 
     //Simple nested tag
     il = { div: { p: 'Hello world'} };
-    out = templ(il);
+    out = compose(il);
     ok(out == '<div><p>Hello world</p></div>', 'Simple nested tag: ' + out);
 
     //Simple nested tag with style
     il = { div: { p: { style: 'color: red', text: 'Hello world'}}};
-    out = templ(il);
+    out = compose(il);
     ok(out == '<div><p style="color: red">Hello world</p></div>', 'Simple nested tag with style: ' + out);
 
     //Complex nested Tag
     il = { div: { style: 'z-order: 1', p: 'Hello world'} };
-    out = templ(il);
+    out = compose(il);
     ok(out == '<div style="z-order: 1"><p>Hello world</p></div>', 'Complex nested Tag: ' + out);
 
 	il = {
@@ -144,7 +144,7 @@ test('templ', function () {
 		}
 	};
 
-	out = templ(il);
+	out = compose(il);
     ok(out == '<html><head><title>Test Page</title></head><body><p>Test1</p><p>Test2</p></body></html>', out);
 });
 
