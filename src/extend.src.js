@@ -113,25 +113,22 @@
 
 	//-- JSON-based Microtemplating 
 
-	var elements = 'a,abbr,address,area,article,aside,audio,b,base,bb,bdo,blockquote,body,br,button,canvas,caption,cite,\
-	code,col,colgroup,command,datagrid,datalist,dd,del,details,dialog,dfn,div,dl,dt,em,embed,eventsource,fieldset,\
-	figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hr,html,i,iframe,img,input,ins,kbd,label,legend,li,\
-    link,mark,map,menu,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,ruby,\
-    rp,rt,samp,script,section,select,small,source,span,strong,sub,sup,table,tbody,td,textarea,tfoot,th,\
-    thead,time,title,tr,ul,var,video'.split(',');
+	var elementTable = {}, output;
 
-    var elementTable = {};
-    var output = [];
+    var tags = 'abipq,bbbrdddldtemh1h2h3h4h5h6hrliolrprttdthtrul,bdocoldeldfndivimginskbdmapnavpresubsupvar,abbrareabasebodycitecodeformheadhtmllinkmarkmenumetarubysampspantime,asideaudioembedinputlabelmeterparamsmalltabletbodytfoottheadtitlevideo,buttoncanvasdialogfigurefooterheaderiframelegendobjectoptionoutputscriptselectsourcestrong,addressarticlecaptioncommanddetailssection,colgroupdatagriddatalistfieldsetnoscriptoptgroupprogresstextarea,,blockquote,eventsource'.split(',');
+    for(var i=1,len=tags.length; i<=len; i++) {
+        var tag=tags[i-1];
 
-    //Create an associative array from the valid html elements
-    for (var i = elements.length - 1; i >= 0; i--) elementTable[elements[i]] = {open: 0, closed: 0};
-
-    elements = null;
+        for(var j=0,len2=tag.length; j<len2; j+=i) {
+            elementTable[tag.substring(j, j+i)] = {open:0, closed:0};
+            $('#content').append('<p>' + tag.substring(j, j+i) + '</p>');
+        }
+    }
 
     //Main parsing function
     root.templ = function (il) {
         
-		output = [];
+		output = []; //reset
         parseIl(il, null);
         return output.join('');
     };
