@@ -26,8 +26,26 @@ test("namespace", function() {
 
 	var space5 = namespace(window.alpha);
 	ok(window.alpha === space5, 'alpha object namespace returned');
-	
 });
+
+test("namespace extend", function() {
+
+	var space1 = namespace('system.data',function() {
+		this.customer = {age:37};
+	})
+	
+	space1.extend(function() {
+		this.customer.type = 'full';
+	});
+
+	space1.extend(function() {
+		this.parent = true;
+	});
+
+	ok(system.data.customer.age === 37, 'customer age 37');
+	ok(system.data.customer.type === 'full', 'customer is full type');
+	ok(system.data.parent, 'parent object value set');
+})
 
 
 module("define tests");
@@ -94,6 +112,33 @@ test("define", function() {
 	ok(director.getBonus() == 5000, 'director bonus is 5000.00');
 	ok(Employee.prototype.getBonus.call(director) == 500, 'director original bonus is 500.00');
 
+})
+
+test("define extend", function() {
+
+	var Car = define(function() {
+		this.wheels = 4;
+	});
+	
+	// Car.constructor.parked = true;
+
+	Car.extend(function() {
+		this.parked = true;
+	})
+
+	Car.prototype.extend(function() {
+		this.start = function() {
+			this.parked = false;
+		}
+	})
+
+	var car = new Car();
+	ok(car.wheels = 4, 'Car wheels 4');
+	ok(car.parked, 'Car is parked.');
+
+	car.start();
+
+	ok(!car.parked, 'Car has started.')
 })
 
 

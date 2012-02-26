@@ -44,7 +44,8 @@
 		if (arguments.length === 1) c = o, o = null;
 
 		if (o) F.prototype = new o();
-		F.prototype.extend = function(fn) {
+
+		F.extend = F.prototype.extend  = function(fn) {
 			if (typeof fn === 'function') fn.apply(this);
 		}
 
@@ -64,7 +65,7 @@
 
 		if (!arguments.length) return;
 
-		var callback = null;			
+		var callback;			
 		var scripts = 0;
 		var count = 0;
 		var regext = /.js$/;
@@ -98,13 +99,13 @@
 
 				  	script.onload = script.onreadystatechange = null;
 				  	count++;
-					if (callback != null && count === scripts) callback();
+					if (callback && count === scripts) callback();
 
 				};
 				script.async = true;
 
 				//Set source. Add preconfigured extension if required
-				script.src = [scriptFolder, '/',  arg, scriptExt].join('');
+				script.src = arg;
 				document.head.appendChild(script);
 			}
 		}
@@ -124,12 +125,6 @@
         }
     }
 
-    //Type checking
-	root.type = function(e) {
-		if (typeof e === 'undefined') return 'undefined';
-		if (e=== null) return 'null';
-		return Object.prototype.toString.call(e).toLowerCase().replace('[object ','').replace(']','');
-	}
 
     root.compose = function (il) {
         
@@ -147,6 +142,13 @@
 			output.push('>');
 			elementTable[key].closed ++;
 		}
+	}
+
+	//Type checking
+	function type(e) {
+		if (typeof e === 'undefined') return 'undefined';
+		if (e === null) return 'null';
+		return Object.prototype.toString.call(e).toLowerCase().replace('[object ','').replace(']','');
 	}
 
     //Parse each element in the template IL recursively
@@ -178,17 +180,14 @@
 						//If we have an open tag close it
 						checkClose(parent);
 
-						output.push('<');
-						output.push(key);
+						output.push('<' + key);
 
 						elementTable[key].open++;
 
 						parseIl(el, key);
 
 						checkClose(key);
-						output.push('</');
-						output.push(key);
-						output.push('>');
+						output.push('</' + key + '>');
 
 						result = true;
 					}
@@ -198,9 +197,7 @@
 							parseIl(el, parent);
 						}
 						else {
-							output.push(' ');
-							output.push(key);
-							output.push('="');
+							output.push(' ' + key + '="');
 
 							parseIl(el, null);
 
