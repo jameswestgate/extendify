@@ -41,18 +41,26 @@
 	//-- Returns an empty object that can be extended
 	root.define = function(o, c) {
 		
+		var ctors = [];
+
 		if (arguments.length === 1) c = o, o = null;
-
 		if (o) F.prototype = new o();
+		
+		F.prototype.extend = function(fn) {if (typeof fn === 'function') fn.apply(this)};
+		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
+<<<<<<< HEAD
 		F.constructor.extend = F.prototype.extend  = function(fn) {
 			if (typeof fn === 'function') fn.apply(this);
 		}
 
+=======
+		F.extend(c);
+>>>>>>> Add extend functionality to constructors.
 		return F;
 
 		function F(){
-			if (typeof c === 'function') c.apply(this, arguments);
+			for(var i=0, len=ctors.length; i<len; i++) ctors[i].apply(this, arguments);
 		}
 	}
 

@@ -119,8 +119,6 @@ test("define extend", function() {
 	var Car = define(function() {
 		this.wheels = 4;
 	});
-	
-	// Car.constructor.parked = true;
 
 	Car.extend(function() {
 		this.parked = true;
