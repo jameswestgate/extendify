@@ -144,17 +144,10 @@
 		}
 	}
 
-	//Type checking
-	function type(e) {
-		if (typeof e === 'undefined') return 'undefined';
-		if (e === null) return 'null';
-		return Object.prototype.toString.call(e).toLowerCase().replace('[object ','').replace(']','');
-	}
-
     //Parse each element in the template IL recursively
     function parseIl(il, parent) {
         
-        var t = type(il);
+        var t = (typeof il === 'undefined' || il === null) ? '' : Object.prototype.toString.call(il).toLowerCase().replace('[object ','').replace(']','');
 
         if (t === 'array') {
             
