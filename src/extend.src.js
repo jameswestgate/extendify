@@ -49,14 +49,7 @@
 		F.prototype.extend = function(fn) {if (typeof fn === 'function') fn.apply(this)};
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
-<<<<<<< HEAD
-		F.constructor.extend = F.prototype.extend  = function(fn) {
-			if (typeof fn === 'function') fn.apply(this);
-		}
-
-=======
 		F.extend(c);
->>>>>>> Add extend functionality to constructors.
 		return F;
 
 		function F(){
@@ -132,7 +125,6 @@
             elementTable[tag.substring(j, j+i)] = {open:0, closed:0};
         }
     }
-
 
     root.compose = function (il) {
         
