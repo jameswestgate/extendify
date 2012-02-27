@@ -45,7 +45,7 @@
 
 		if (o) F.prototype = new o();
 
-		F.extend = F.prototype.extend  = function(fn) {
+		F.constructor.extend = F.prototype.extend  = function(fn) {
 			if (typeof fn === 'function') fn.apply(this);
 		}
 
