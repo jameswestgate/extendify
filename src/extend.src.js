@@ -16,10 +16,16 @@
 
 (function(root) {
 
+	root.extend = function(c) {
+		return function(fn) {
+			if (typeof fn === 'function') fn.apply(c);
+		}
+	}
+
 	//-- Returns an object containing an existing and/or new sub objects representing a name hierarchy
 	root.namespace = function(path, fn) {
 		
-		var root = window;
+		var base = window;
 
 		//Only parse string paths 
 		if (typeof path === 'string') {
@@ -27,15 +33,18 @@
 			var spaces = path.split('.');
 
 			//Set up the namespace objects
-			for (var i=0, len=spaces.length; i<len; i++) root = root[spaces[i]] = root[spaces[i]] || {extend: function(fn) {if (typeof fn === 'function') fn.apply(this)}};
+			for (var i=0, len=spaces.length; i<len; i++) {
+				base = base[spaces[i]] = base[spaces[i]] || {extend: null};
+				if (base.extend === null) base.extend = root.extend(base);
+			}
 		}
 		else {
-			root = path;
+			base = path;
 		}
 
-		if (typeof fn === 'function') root.extend(fn);
+		base.extend(fn);
 
-		return root;
+		return base;
 	};
 
 	//-- Returns an empty object that can be extended
@@ -46,7 +55,7 @@
 		if (arguments.length === 1) c = o, o = null;
 		if (o) F.prototype = new o();
 		
-		F.prototype.extend = function(fn) {if (typeof fn === 'function') fn.apply(this)};
+		F.prototype.extend = root.extend(F.prototype);
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
 		F.extend(c);

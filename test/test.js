@@ -139,6 +139,48 @@ test("define extend", function() {
 	ok(!car.parked, 'Car has started.')
 })
 
+test("define edge", function() {
+
+	var Static = define(function() {
+		this.one = true;
+	});
+
+	Static.extend(function(){
+		this.two = true;
+	});
+
+	Static.prototype.extend(function() {
+		this.four = function() {
+			return true;
+		};
+	})
+
+	var stat = new Static();
+
+	ok (stat.one, "one is true");
+	ok (stat.two, "two is true");
+	ok (typeof stat.three === "undefined");
+	ok (stat.four(), "four is true")
+	ok (typeof stat.five === "undefined");
+
+	Static.extend(function() {
+		this.three = true;
+	})
+
+	Static.prototype.extend(function() {
+		this.five = function() {
+			return true;
+		};
+	})
+
+	stat = new Static();
+	ok (stat.one, "one is still true");
+	ok (stat.two, "two is still true");
+	ok (stat.three, "three is true");
+	ok (stat.four(), "four is true");
+	ok (stat.five(), "five is true")
+})
+
 
 module('compose tests');
 
