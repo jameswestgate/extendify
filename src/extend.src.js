@@ -16,6 +16,7 @@
 
 (function(root) {
 
+	//Returns a function that takes a function parameter to be applied with the context provided
 	root.extend = function(c) {
 		return function(fn) {
 			if (typeof fn === 'function') fn.apply(c);
