@@ -54,7 +54,7 @@
 		var ctors = [];
 
 		if (arguments.length === 1) c = o, o = null;
-		if (o) F.prototype = new o();
+		if (o) F.prototype = new o(), F.super = 0;
 		
 		F.prototype.extend = root.extend(F.prototype);
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
