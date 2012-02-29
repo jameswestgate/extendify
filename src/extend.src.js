@@ -63,7 +63,7 @@
 		return F;
 
 		function F(){
-			for(var i=0, len=ctors.length; i<len; i++) ctors[i].apply(this, arguments);
+			for(var i=0, len=ctors.length; i<len; i++) this.base = o, ctors[i].apply(this, arguments);
 		}
 	}
 

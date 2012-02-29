@@ -59,8 +59,7 @@ test("define", function() {
 	})
 
 	var Employee = define(Person, function(name) {
-		Person.call(this, name);
-
+		this.base.call(this, name);
 		this.salary = 123;
 	});
 
@@ -72,7 +71,7 @@ test("define", function() {
 
 	var Director = define(Employee, function(name) {
 
-		Employee.call(this, name);
+		this.base.call(this, name);
 		this.options = 1000;
 	});
 
