@@ -17,9 +17,13 @@
 (function(root) {
 
 	//Returns a function that takes a function parameter to be applied with the context provided
-	root.extend = function(c) {
-		return function(fn) {
-			if (typeof fn === 'function') fn.apply(c);
+	root.extendify = function(c) {
+		return function(arg) {
+			var t = typeof arg;
+			if (t === 'function') {
+				arg.apply(c);
+				return;
+			}
 		}
 	}
 
@@ -36,7 +40,7 @@
 			//Set up the namespace objects
 			for (var i=0, len=spaces.length; i<len; i++) {
 				base = base[spaces[i]] = base[spaces[i]] || {extend: null};
-				if (base.extend === null) base.extend = root.extend(base);
+				if (base.extend === null) base.extend = root.extendify(base);
 			}
 		}
 		else {
@@ -56,7 +60,7 @@
 		if (arguments.length === 1) c = o, o = null;
 		if (o) F.prototype = new o();
 		
-		F.prototype.extend = root.extend(F.prototype);
+		F.prototype.extend = root.extendify(F.prototype);
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
 		F.extend(c);
@@ -79,7 +83,6 @@
 		var callback;			
 		var scripts = 0;
 		var count = 0;
-		var regext = /.js$/;
 
 		//Loop through arguments
 		for (var i=0, len=arguments.length; i<len; i++) {
