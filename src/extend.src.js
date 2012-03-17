@@ -19,10 +19,12 @@
 	//Returns a function that takes a function parameter to be applied with the context provided
 	root.extendify = function(c) {
 		return function(arg) {
-			var t = typeof arg;
-			if (t === 'function') {
-				arg.apply(c);
-				return;
+			if (arguments.length) {
+				var t = typeof arg;
+				if (t === 'function') {
+					arg.apply(c);
+					return;
+				}
 			}
 		}
 	}
@@ -160,7 +162,7 @@
     //Parse each element in the template IL recursively
     function parseIl(il, parent) {
         
-        var t = (typeof il === 'undefined' || il === null) ? '' : Object.prototype.toString.call(il).toLowerCase().replace('[object ','').replace(']','');
+        var t = (typeof il === 'undefined' || il === null) ? '' : nativeType(il);
 
         if (t === 'array') {
             
@@ -220,6 +222,10 @@
             //Render text inside tag or attribute
             output.push(il);
         }
+    }
+
+    function nativeType(t) {
+    	return Object.prototype.toString.call(t).toLowerCase().replace('[object ','').replace(']','')
     }
     
 })(window);
