@@ -20,9 +20,17 @@
 	root.extendify = function(c) {
 		return function(arg) {
 			if (arguments.length) {
-				var t = typeof arg;
+				var t = nativeType(arg)
+				
+				//Call the function setting invoker as this
 				if (t === 'function') {
 					arg.apply(c);
+					return;
+				}
+
+				//Copy members of t into the invoker
+				if (t === 'object') {
+					for(var key in t) c[key] = t[key];
 					return;
 				}
 			}
@@ -31,7 +39,6 @@
 
 	//-- Returns an object containing an existing and/or new sub objects representing a name hierarchy
 	root.namespace = function(path, fn) {
-		
 		var base = window;
 
 		//Only parse string paths 
@@ -41,8 +48,8 @@
 
 			//Set up the namespace objects
 			for (var i=0, len=spaces.length; i<len; i++) {
-				base = base[spaces[i]] = base[spaces[i]] || {extend: null};
-				if (base.extend === null) base.extend = root.extendify(base);
+				base = base[spaces[i]] = base[spaces[i]] || {};
+				if (!base.extend) base.extend = root.extendify(base);
 			}
 		}
 		else {
@@ -162,7 +169,7 @@
     //Parse each element in the template IL recursively
     function parseIl(il, parent) {
         
-        var t = (typeof il === 'undefined' || il === null) ? '' : nativeType(il);
+        var t = nativeType(il);
 
         if (t === 'array') {
             
@@ -225,6 +232,8 @@
     }
 
     function nativeType(t) {
+    	if (t === null) return 'null';
+    	if (typeof t === 'undefined') return 'undefined';
     	return Object.prototype.toString.call(t).toLowerCase().replace('[object ','').replace(']','')
     }
     
