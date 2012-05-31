@@ -4,7 +4,7 @@
 // ==/ClosureCompiler==
 
 /*
-* Extend JavaScript Framework
+* Extendify JavaScript Framework
 * https://github.com/jameswestgate/ExtendJS
 * 
 * Copyright (c) James Westgate 2012
@@ -14,11 +14,16 @@
 *   http://www.gnu.org/licenses/gpl.html
 */
 
-(function(root) {
+window.extend = function(root) {
+
+	delete window.extend;
+	root = root || window;
 
 	//Returns a function that takes a function parameter to be applied with the context provided
 	root.extendify = function(c) {
-		return function(arg) {
+		
+		c.extend = function(arg) {
+			
 			if (arguments.length) {
 				var t = nativeType(arg)
 				
@@ -30,7 +35,12 @@
 
 				//Copy members of t into the invoker
 				if (t === 'object') {
-					for(var key in t) c[key] = t[key];
+					for (var key in t) c[key] = t[key];
+					return;
+				}
+
+				if (t === 'array') {
+					for (var i=0, len=t.length; i<len; i++) arguments.callee(t[i]);
 					return;
 				}
 			}
@@ -49,7 +59,7 @@
 			//Set up the namespace objects
 			for (var i=0, len=spaces.length; i<len; i++) {
 				base = base[spaces[i]] = base[spaces[i]] || {};
-				if (!base.extend) base.extend = root.extendify(base);
+				if (!base.extend) root.extendify(base);
 			}
 		}
 		else {
@@ -69,7 +79,7 @@
 		if (arguments.length === 1) c = o, o = null;
 		if (o) F.prototype = new o();
 		
-		F.prototype.extend = root.extendify(F.prototype);
+		root.extendify(F.prototype);
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
 		F.extend(c);
@@ -236,8 +246,9 @@
     	if (typeof t === 'undefined') return 'undefined';
     	return Object.prototype.toString.call(t).toLowerCase().replace('[object ','').replace(']','')
     }
-    
-})(window);
+};
+
+
 
 
 
