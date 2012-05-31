@@ -1,5 +1,7 @@
 module("namespace tests");
 
+//Initialise Extendify Js
+window.extend();
 
 test("namespace", function() {
 
