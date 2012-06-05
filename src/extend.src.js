@@ -14,7 +14,7 @@
 *   http://www.gnu.org/licenses/gpl.html
 */
 
-window.extend = function(root) {
+window.extend = function(root, proto) {
 
 	delete window.extend;
 	root = root || window;
@@ -44,6 +44,40 @@ window.extend = function(root) {
 					return;
 				}
 			}
+		}
+
+
+		//-- events on/off
+		c.on = function(e, f) {
+			if (!this._events) this._events = [];
+			
+			var arr = this._events;
+
+			if (f) {	
+				arr.push([e, f]);
+			}
+			else {
+				var idx = arr.indexOf(e);
+				while (idx !== -1) {
+					arr[idx]();
+					idx = arr.indexOf(e, idx);
+				}
+			}	
+		}
+
+		c.off = function(e) {
+			var idx = arr.indexOf(e);
+			while (idx !== -1) {
+				delete arr[idx]();
+				idx = arr.indexOf(e, idx);
+			}
+		}
+
+		//-- Prop is a chainable key pair system
+		c.prop = function(name, value) {
+			if (typeof value === "undefined") return c[name];
+			c[name] = value;
+			return this;
 		}
 	}
 
@@ -87,6 +121,40 @@ window.extend = function(root) {
 
 		function F(){
 			for(var i=0, len=ctors.length; i<len; i++) this.base = o, ctors[i].apply(this, arguments);
+		}
+	}
+
+	//-- Deferreds 
+
+	root.Deferred = function() {
+
+	}
+
+	root.Deferred.prototype = {
+		resolve: null,
+		reject: null,
+		when: function() {
+			return this.defer();
+		},
+		then: function() {
+			return this.defer();
+		},
+		defer: function() {
+			var def = new Deferred();
+			var count = 0;
+			
+			for (var i=0, len<arguments.length; i<len; i+) {
+				var f = arguments[i];
+				f.resolve = function() {
+					count++;
+					if (count == arguments.length) def.resolve();
+				}
+				f.reject = function() {
+					def.reject();
+				}
+			}
+
+			return def;
 		}
 	}
 
