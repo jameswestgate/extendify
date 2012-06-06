@@ -68,7 +68,7 @@ window.extend = function(root, proto) {
 		c.off = function(e) {
 			var idx = arr.indexOf(e);
 			while (idx !== -1) {
-				delete arr[idx]();
+				delete arr[idx];
 				idx = arr.indexOf(e, idx);
 			}
 		}
@@ -120,41 +120,63 @@ window.extend = function(root, proto) {
 		return F;
 
 		function F(){
-			for(var i=0, len=ctors.length; i<len; i++) this.base = o, ctors[i].apply(this, arguments);
+			ctors.forEach(function(e) {
+				this.base = o, e.apply(this, arguments);
+			});
 		}
 	}
 
 	//-- Deferreds 
 
-	root.Deferred = function() {
+	root.defer = function() {
+		var def = new Deferred();
+		var count = 0;
+		
+		for (var i=0, len = arguments.length; i<len; i++) {
+			var f = arguments[i];
 
+			if (typeof f === 'function') {
+
+				var res = f();
+
+				if (res instanceof Deferred) {
+
+					f.resolve = function() {
+						count++;
+						if (count == arguments.length) {
+							def.reolved = true;
+							def.resolve();
+						}
+					},
+					f.reject = function() {
+						def.rejected = true;
+						def.reject();
+						break;
+					}
+				}
+				else {
+					count++;
+					if (count === arguments.length) def.resolve();
+				}
+			}
+		}
+
+		return def;
+	}
+
+	root.Deferred = function() {
+		this.resolved = false;
+		this.rejected = false;
 	}
 
 	root.Deferred.prototype = {
 		resolve: null,
 		reject: null,
 		when: function() {
-			return this.defer();
+			return root.defer();
 		},
 		then: function() {
-			return this.defer();
-		},
-		defer: function() {
-			var def = new Deferred();
-			var count = 0;
-			
-			for (var i=0, len<arguments.length; i<len; i+) {
-				var f = arguments[i];
-				f.resolve = function() {
-					count++;
-					if (count == arguments.length) def.resolve();
-				}
-				f.reject = function() {
-					def.reject();
-				}
-			}
-
-			return def;
+			return root.defer();
 		}
 	}
 
@@ -251,13 +273,12 @@ window.extend = function(root, proto) {
 
         if (t === 'array') {
             
-			for (var i = 0, length = il.length; i < length; i++) {
-                parseIl(il[i], parent);
-            }
+            il.forEach(function(e) {
+            	parseIl(e, parent);
+            });
         } 
 		else if (t === 'function') {
             parseIl(il(), parent);
-
         } 
 		else if (t === 'object') {
             
