@@ -4,29 +4,31 @@
 // ==/ClosureCompiler==
 
 /*
-* Extendify JavaScript Framework
+* Extendify JavaScript Framework 1.0
 * https://github.com/jameswestgate/ExtendJS
 * 
-* Copyright (c) James Westgate 2012
+* Copyright (c) James Westgate 2013
 *
 * Dual licensed under the MIT and GPL licenses:
 *   http://www.opensource.org/licenses/mit-license.php
 *   http://www.gnu.org/licenses/gpl.html
 */
 
-window.extend = function(root, proto) {
+window.extend = function(root) {
 
 	delete window.extend;
 	root = root || window;
 
-	//Returns a function that takes a function parameter to be applied with the context provided
+	//-- Define a utility function to check undefined and object types
+	root.type = nativeType;
+	
+	//-- Returns a function that takes a function parameter to be applied with the context provided
 	root.extendify = function(c) {
 		
-		c.extend = function(arg) {
-			
+		return function(arg) {
 			if (arguments.length) {
 				var t = nativeType(arg)
-				
+
 				//Call the function setting invoker as this
 				if (t === 'function') {
 					arg.apply(c);
@@ -35,49 +37,10 @@ window.extend = function(root, proto) {
 
 				//Copy members of t into the invoker
 				if (t === 'object') {
-					for (var key in t) c[key] = t[key];
-					return;
-				}
-
-				if (t === 'array') {
-					for (var i=0, len=t.length; i<len; i++) arguments.callee(t[i]);
+					for(var key in t) c[key] = t[key];
 					return;
 				}
 			}
-		}
-
-
-		//-- events on/off
-		c.on = function(e, f) {
-			if (!this._events) this._events = [];
-			
-			var arr = this._events;
-
-			if (f) {	
-				arr.push([e, f]);
-			}
-			else {
-				var idx = arr.indexOf(e);
-				while (idx !== -1) {
-					arr[idx]();
-					idx = arr.indexOf(e, idx);
-				}
-			}	
-		}
-
-		c.off = function(e) {
-			var idx = arr.indexOf(e);
-			while (idx !== -1) {
-				delete arr[idx];
-				idx = arr.indexOf(e, idx);
-			}
-		}
-
-		//-- Prop is a chainable key pair system
-		c.prop = function(name, value) {
-			if (typeof value === "undefined") return c[name];
-			c[name] = value;
-			return this;
 		}
 	}
 
@@ -93,7 +56,7 @@ window.extend = function(root, proto) {
 			//Set up the namespace objects
 			for (var i=0, len=spaces.length; i<len; i++) {
 				base = base[spaces[i]] = base[spaces[i]] || {};
-				if (!base.extend) root.extendify(base);
+				if (!base.extend) base.extend = root.extendify(base);
 			}
 		}
 		else {
@@ -112,75 +75,19 @@ window.extend = function(root, proto) {
 
 		if (arguments.length === 1) c = o, o = null;
 		if (o) F.prototype = new o();
-		
-		root.extendify(F.prototype);
+
+		F.prototype.extend = root.extendify(F.prototype);
 		F.extend = function(fn) {if (typeof fn === 'function') ctors.push(fn)};
 
 		F.extend(c);
 		return F;
 
 		function F(){
-			ctors.forEach(function(e) {
-				this.base = o, e.apply(this, arguments);
-			});
+			for(var i=0, len=ctors.length; i<len; i++) this.base = o, ctors[i].apply(this, arguments);
 		}
 	}
 
-	//-- Deferreds 
-
-	root.defer = function() {
-		var def = new Deferred();
-		var count = 0;
-		
-		for (var i=0, len = arguments.length; i<len; i++) {
-			var f = arguments[i];
-
-			if (typeof f === 'function') {
-
-				var res = f();
-
-				if (res instanceof Deferred) {
-
-					f.resolve = function() {
-						count++;
-						if (count == arguments.length) {
-							def.reolved = true;
-							def.resolve();
-						}
-					},
-					f.reject = function() {
-						def.rejected = true;
-						def.reject();
-						break;
-					}
-				}
-				else {
-					count++;
-					if (count === arguments.length) def.resolve();
-				}
-			}
-		}
-
-		return def;
-	}
-
-	root.Deferred = function() {
-		this.resolved = false;
-		this.rejected = false;
-	}
-
-	root.Deferred.prototype = {
-		resolve: null,
-		reject: null,
-		when: function() {
-			return root.defer();
-		},
-		then: function() {
-			return root.defer();
-		}
-	}
-
-
+	
 	//--Loads one or more script files and executes an optional function when loaded
 
 	//Steve Souders - http://www.stevesouders.com/blog/2010/12/06/evolution-of-script-loading/
@@ -220,8 +127,8 @@ window.extend = function(root, proto) {
 				script.onload = script.onreadystatechange = function () {
 					if (script.readyState && script.readyState !== 'complete' && script.readyState !== 'loaded') return false;
 
-				  	script.onload = script.onreadystatechange = null;
-				  	count++;
+					script.onload = script.onreadystatechange = null;
+					count++;
 					if (callback && count === scripts) callback();
 
 				};
@@ -235,27 +142,33 @@ window.extend = function(root, proto) {
 	};
 
 
-	//-- JSON-based Microtemplating 
-
+	//-- Object Literal Microtemplating 
 	var elementTable = {}, output;
 
-    var tags = 'abipq,bbbrdddldtemh1h2h3h4h5h6hrliolrprttdthtrul,bdocoldeldfndivimginskbdmapnavpresubsupvar,abbrareabasebodycitecodeformheadhtmllinkmarkmenumetarubysampspantime,asideaudioembedinputlabelmeterparamsmalltabletbodytfoottheadtitlevideo,buttoncanvasdialogfigurefooterheaderiframelegendobjectoptionoutputscriptselectsourcestrong,addressarticlecaptioncommanddetailssection,colgroupdatagriddatalistfieldsetnoscriptoptgroupprogresstextarea,,blockquote,eventsource'.split(',');
-    for(var i=1,len=tags.length; i<=len; i++) {
-        var tag=tags[i-1];
+	var tags = 'abipq,bbbrdddldtemh1h2h3h4h5h6hrliolrprttdthtrul,bdocoldeldfndivimginskbdmapnavpresubsupvar,abbrareabasebodycitecodeformheadhtmllinkmarkmenumetarubysampspantime,asideaudioembedinputlabelmeterparamsmalltabletbodytfoottheadtitlevideo,buttoncanvasdialogfigurefooterheaderiframelegendobjectoptionoutputscriptselectsourcestrong,addressarticlecaptioncommanddetailssection,colgroupdatagriddatalistfieldsetnoscriptoptgroupprogresstextarea,,blockquote,eventsource'.split(',');
+	for(var i=1,len=tags.length; i<=len; i++) {
+		var tag=tags[i-1];
 
-        for(var j=0,len2=tag.length; j<len2; j+=i) {
-            elementTable[tag.substring(j, j+i)] = {open:0, closed:0};
-        }
-    }
+		for(var j=0,len2=tag.length; j<len2; j+=i) {
+			elementTable[tag.substring(j, j+i)] = {open:0, closed:0};
+		}
+	}
 
-    root.compose = function (il) {
-        
+	//Create markup out of the il 
+	root.compose = function (il) {
 		output = [];
-        parseIl(il, null);
-        return output.join('');
-    };
+		parseIl(il, null);
+		return output.join('');
+	};
 
-	//Private functions
+
+	//--Private functions
+	function nativeType(t) {
+		if (t === null) return 'null';
+		if (typeof t === 'undefined') return 'undefined';
+		return Object.prototype.toString.call(t).toLowerCase().replace('[object ','').replace(']','');
+	}
+
 	function checkClose(key) {
 
 		if (key == null) return;
@@ -266,22 +179,22 @@ window.extend = function(root, proto) {
 		}
 	}
 
-    //Parse each element in the template IL recursively
-    function parseIl(il, parent) {
-        
-        var t = nativeType(il);
+	//Parse each element in the template IL recursively
+	function parseIl(il, parent) {
+		  
+		var t = nativeType(il);
 
-        if (t === 'array') {
-            
-            il.forEach(function(e) {
-            	parseIl(e, parent);
-            });
-        } 
+		if (t === 'array') {
+			
+			il.forEach(function(e) {
+				parseIl(e, parent);
+			});
+		}
 		else if (t === 'function') {
-            parseIl(il(), parent);
-        } 
+			parseIl(il(), parent);
+		} 
 		else if (t === 'object') {
-            
+			
 			for (var key in il) {
 
 				if (il.hasOwnProperty(key)) {
@@ -319,22 +232,15 @@ window.extend = function(root, proto) {
 						}
 					}
 				}
-            };
-
-        } 
+			};
+		} 
 		else {
-            checkClose(parent);
+			checkClose(parent);
 
-            //Render text inside tag or attribute
-            output.push(il);
-        }
-    }
-
-    function nativeType(t) {
-    	if (t === null) return 'null';
-    	if (typeof t === 'undefined') return 'undefined';
-    	return Object.prototype.toString.call(t).toLowerCase().replace('[object ','').replace(']','')
-    }
+			//Render text inside tag or attribute
+			output.push(il);
+		}
+	}
 };
 
 

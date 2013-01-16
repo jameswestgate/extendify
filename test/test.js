@@ -234,33 +234,3 @@ test('compose', function () {
     ok(out == '<html><head><title>Test Page</title></head><body><p>Test1</p><p>Test2</p></body></html>', out);
 });
 
-module("deferred tests");
-
-test('simple deferred', function() {
-
-	var def = defer(function(e) {
-		var res = new Deferred();
-		res.resolve();
-
-		return res;
-	});
-
-	def.start();
-	ok(result.resolved, "defer resolved");
-
-	def = defer(function(e) {
-		var res = new Deferred();
-		res.reject();
-
-		return res;
-	});
-
-	def.start();
-	
-	ok(result.rejected, "defer rejected");
-
-	var result;
-
-
-})
-
