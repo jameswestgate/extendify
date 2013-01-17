@@ -20,7 +20,9 @@ window.extend = function(root) {
 	root = root || window;
 
 	//-- Define a utility function to check undefined and object types
-	root.type = nativeType;
+	root.type = function(t, c) {
+		return nativeType(t) === c;
+	}
 	
 	//-- Returns a function that takes a function parameter to be applied with the context provided
 	root.extendify = function(c) {
