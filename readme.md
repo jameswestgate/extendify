@@ -1,3 +1,3 @@
 ExtendifyJS adds missing bits of the puzzle to JavaScript development, all brought together in a single download of wholesome goodness.
 
-If you need simple, lightweight _namespacing_, _script loading_, _class definitions_, _events_, _deferred_ objects or a groovy _templating_ solution then look no further than Extendify. Extendify will always be a minimal library, lean and mean. We pledge never to exceed 2k minified and gzipped. Currently under 1.5k!
+If you need simple, lightweight _namespacing_, _script loading_, _class definitions_ or a groovy _templating_ solution then look no further than Extendify. Extendify will always be a minimal library, lean and mean. We pledge never to exceed 2k minified and gzipped. Currently under 1.5k!
