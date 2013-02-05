@@ -4,7 +4,7 @@
 // ==/ClosureCompiler==
 
 /*
-* Extendify JavaScript Framework 1.0
+* Extendify JavaScript Framework 1.1
 * https://github.com/jameswestgate/ExtendJS
 * 
 * Copyright (c) James Westgate 2013
