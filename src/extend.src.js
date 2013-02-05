@@ -104,10 +104,9 @@ window.extend = function(root) {
 		var callback;			
 		var scripts = 0;
 		var count = 0;
-		var len=arguments.length;
 		
 		//Loop through arguments
-		for (var i=0; i<len; i++) {
+		for (var i=0, len=arguments.length; i<len; i++) {
 
 			var arg = arguments[i];
 
