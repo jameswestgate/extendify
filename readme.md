@@ -18,6 +18,6 @@ Super lightweight namespacing, object creation, script loading and groovy templa
 </tbody>
 </table>
 
-###Unit Tests
+**Unit Tests**
 
-Click <a href="http://jameswestgate.github.com/extendify/test/">here</a> to execute the latest unit tests.
+Click <a href="http://jameswestgate.github.com/extendify/test/" target="_blank">here</a> to execute the latest unit tests.
