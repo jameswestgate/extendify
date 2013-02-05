@@ -94,6 +94,9 @@ window.extend = function(root) {
 
 	//Steve Souders - http://www.stevesouders.com/blog/2010/12/06/evolution-of-script-loading/
 	//Dustin Diaz - http://www.dustindiaz.com/scriptjs/
+	
+	var loaded = []; //previously loaded scripts
+
 	root.load = function() {
 
 		if (!arguments.length) return;
@@ -101,9 +104,10 @@ window.extend = function(root) {
 		var callback;			
 		var scripts = 0;
 		var count = 0;
-
+		var len=arguments.length;
+		
 		//Loop through arguments
-		for (var i=0, len=arguments.length; i<len; i++) {
+		for (var i=0; i<len; i++) {
 
 			var arg = arguments[i];
 
@@ -113,13 +117,16 @@ window.extend = function(root) {
 				scripts = i;
 
 				//Check callback ie if using loaded mods
-				if (count === scripts) callback(scriptFolder, scriptExt);
+				if (count === scripts) callback();
 				break;
 			}
+
+			arg = arg.toString();
 
 			//If loaded increment counter, else load with callback
 			if (loaded[arg]) {
 				count++;
+				if (callback && count === scripts) callback();
 			}
 			else {
 
@@ -131,6 +138,8 @@ window.extend = function(root) {
 
 					script.onload = script.onreadystatechange = null;
 					count++;
+					loaded[arg] = true;
+
 					if (callback && count === scripts) callback();
 
 				};
@@ -138,7 +147,7 @@ window.extend = function(root) {
 
 				//Set source. Add preconfigured extension if required
 				script.src = arg;
-				document.head.appendChild(script);
+				document.getElementsByTagName('head')[0].appendChild(script);
 			}
 		}
 	};
