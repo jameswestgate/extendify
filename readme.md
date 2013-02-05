@@ -17,3 +17,7 @@ Super lightweight namespacing, object creation, script loading and groovy templa
 <tr><td><a href="../../wiki/extendify/">extendify</a></td><td>Create a function that will extend the context provided.</td></tr>
 </tbody>
 </table>
+
+###Unit Tests
+
+Click <a href="http://jameswestgate.github.com/extendify/test/">here</a> to execute the latest unit tests.
