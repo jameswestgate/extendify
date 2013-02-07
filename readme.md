@@ -6,6 +6,25 @@ Extendify will always be a minimal library, lean and mean. We pledge never to ex
 
 **Getting Started**
 
+No functions are available until added to the namespace object of your choice. By default all functions are added to the
+window object and can be used without prefix:
+
+```javascript
+//Adds all methods to the window object
+extend(); //Equivalent to extend(window);
+
+load('myLibrary.js', 'another.js', function() {
+  alert('scripts loaded!')
+})
+```
+If you prefer, extendify can be added to an object of your choice:
+
+```javascript
+var ex = {};
+extend(ex); //Equivalent to extend(window);
+
+alert(ex.compose({p:'Hello world'})); //alerts 'Hello world'
+```
 
 **Functions**
 
