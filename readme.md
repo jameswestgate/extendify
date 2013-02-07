@@ -1,9 +1,11 @@
-# Extendify JavaScript Framework
+Super lightweight namespacing, object creation, script loading and groovy templating solution. Extendify is named after a function which adds the _extend_ method to all namespaces, class functions and prototypes created with the library.
 
-Super lightweight namespacing, object creation, script loading and groovy templating solution. Extend will always be a minimal library, lean and mean. We pledge never to exceed 2k minified and gzipped.
-
+Extendify will always be a minimal library, lean and mean. We pledge never to exceed 2k minified and gzipped.
 
 ###API Documentation
+
+**Getting Started**
+
 
 **Functions**
 
