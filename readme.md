@@ -10,7 +10,7 @@ No functions are available until added to the namespace object of your choice. B
 window object and can be used without prefix:
 
 ```javascript
-//Adds all methods to the window object
+//Add methods to the window object
 extend(); //Equivalent to extend(window);
 
 load('myLibrary.js', 'another.js', function() {
