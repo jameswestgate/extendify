@@ -21,7 +21,7 @@ If you prefer, extendify can be added to an object of your choice:
 
 ```javascript
 var ex = {};
-extend(ex); //Equivalent to extend(window);
+extend(ex);
 
 alert(ex.compose({p:'Hello world'})); //alerts 'Hello world'
 ```
