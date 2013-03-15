@@ -50,17 +50,17 @@ test("namespace extend", function() {
 })
 
 
-module("define tests");
+module("type tests");
 
 
-test("define", function() {
+test("type", function() {
 
 	//Test definitions
-	var Person = define(function(name) {
+	var Person = type(function(name) {
 		this.name = name;
 	})
 
-	var Employee = define(Person, function(name) {
+	var Employee = type(Person, function(name) {
 		this.base.call(this, name);
 		this.salary = 123;
 	});
@@ -71,7 +71,7 @@ test("define", function() {
 		}
 	});
 
-	var Director = define(Employee, function(name) {
+	var Director = type(Employee, function(name) {
 
 		this.base.call(this, name);
 		this.options = 1000;
@@ -115,9 +115,9 @@ test("define", function() {
 
 })
 
-test("define extend", function() {
+test("type extend", function() {
 
-	var Car = define(function() {
+	var Car = type(function() {
 		this.wheels = 4;
 	});
 
@@ -140,9 +140,9 @@ test("define extend", function() {
 	ok(!car.parked, 'Car has started.')
 })
 
-test("define edge", function() {
+test("type edge", function() {
 
-	var Static = define(function() {
+	var Static = type(function() {
 		this.one = true;
 	});
 
@@ -233,4 +233,67 @@ test('compose', function () {
 	out = compose(il);
     ok(out == '<html><head><title>Test Page</title></head><body><p>Test1</p><p>Test2</p></body></html>', out);
 });
+
+test('Events', function() {
+
+	//Simple test
+	var events = new Events();
+	var click = false;
+
+	events.on('click', function() {
+		click = true;
+	})
+
+	//fir eclick event
+	events.fire('click');
+	ok(click, 'Simple click');
+
+	//Fire non listed event
+	click = false;
+	events.fire('other');
+	ok(!click, 'No click');
+
+	//Remove event
+	events.off('click');
+
+	events.fire('click');
+	ok(!click, 'Click removed')
+})
+
+test('multiple events', function() {
+
+	//Simple test
+	var events = new Events();
+	var one = false, two = false, three = false;
+
+	events.on('click', function() {
+		one = true;
+	})
+
+	events.on('click', function() {
+		two = true;
+	})
+
+	//fire click event
+	events.fire('click');
+	ok(one && two, 'multiple click');
+
+	one = false, two = false, three = false;
+
+	events.on('doubleclick', function() {
+		three = true;
+	})
+
+	//Fire all events
+	events.fire();
+
+	ok(one && two && three, 'seperate multiple events');
+
+	one = false, two = false, three = false;
+
+	events.off();
+	events.fire();
+
+	ok(!one && !two && !three, 'no seperate multiple evemnts');
+})
 
