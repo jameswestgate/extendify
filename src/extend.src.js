@@ -20,7 +20,7 @@ window.extend = function(root) {
 	root = root || window;
 
 	//-- Define a utility function to check undefined and object types
-	root.type = function(t, c) {
+	root.is = function(t, c) {
 		return nativeType(t) === c;
 	}
 	
@@ -71,7 +71,7 @@ window.extend = function(root) {
 	};
 
 	//-- Returns an empty object that can be extended
-	root.define = function(o, c) {
+	root.type = function(o, c) {
 		
 		var ctors = [];
 
@@ -164,12 +164,53 @@ window.extend = function(root) {
 		}
 	}
 
-	//Create markup out of the il 
+	// Create markup out of the il 
 	root.compose = function (il) {
 		output = [];
 		parseIl(il, null);
 		return output.join('');
 	};
+
+
+	root.Events = type(function() {
+
+		var delegates = [];
+
+		//Add an event handler
+		this.on = function() {
+			if (arguments.length > 1 && nativeType(arguments[1]) === 'function') delegates.push([arguments[0], arguments[1]]);
+		}
+
+		//Remove an event handler, by event name, or by function and name
+		this.off = function() {
+
+			//Clear if no arguments
+			if (!arguments.length) {
+				delegates.length = 0;
+				return
+			}
+
+			var i = delegates.length;
+			while (i--) {
+				if (arguments[0] === delegates[i][0]) {
+					if (!arguments[1] || arguments[1] === delegates[i][1]) delegates.splice(i,1);
+				}
+			}
+		}
+
+		//Fires the named evet, or all events if not passed in
+		this.fire = function() {
+			var parms = [];
+			if (arguments.length > 1) {
+				for (var i=1, len=arguments.length; i<len; i++) prms.push(arguments[i]);
+			}
+			
+			for (var i=0, len=delegates.length; i<len; i++) {
+				if (!arguments[0] || arguments[0] === delegates[i][0]) delegates[i][1].apply(this, parms);
+			}
+		}
+
+	});
 
 
 	//--Private functions
