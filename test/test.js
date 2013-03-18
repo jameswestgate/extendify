@@ -179,7 +179,7 @@ test("type edge", function() {
 	ok (stat.two, "two is still true");
 	ok (stat.three, "three is true");
 	ok (stat.four(), "four is true");
-	ok (stat.five(), "five is true")
+	ok (stat.five(), "five is true");
 })
 
 

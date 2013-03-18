@@ -16,6 +16,8 @@
 
 window.extend = function(root) {
 
+	"use strict";
+
 	delete window.extend;
 	root = root || window;
 
@@ -175,6 +177,10 @@ window.extend = function(root) {
 	root.Events = type(function() {
 
 		var delegates = [];
+		var self = this;
+
+		//Store 
+		this.context = null;
 
 		//Add an event handler
 		this.on = function() {
@@ -192,7 +198,7 @@ window.extend = function(root) {
 
 			var i = delegates.length;
 			while (i--) {
-				if (arguments[0] === delegates[i][0]) {
+				if (!arguments[0] || arguments[0] === delegates[i][0]) {
 					if (!arguments[1] || arguments[1] === delegates[i][1]) delegates.splice(i,1);
 				}
 			}
@@ -201,17 +207,21 @@ window.extend = function(root) {
 		//Fires the named evet, or all events if not passed in
 		this.fire = function() {
 			var parms = [];
+			
+			//Move arguments to proper array
 			if (arguments.length > 1) {
 				for (var i=1, len=arguments.length; i<len; i++) prms.push(arguments[i]);
 			}
 			
 			for (var i=0, len=delegates.length; i<len; i++) {
-				if (!arguments[0] || arguments[0] === delegates[i][0]) delegates[i][1].apply(this, parms);
+				if (!arguments[0] || arguments[0] === delegates[i][0]) {
+					self.context = arguments[0];
+					delegates[i][1].apply(this, parms);
+					self.context = null;
+				}
 			}
 		}
-
 	});
-
 
 	//--Private functions
 	function nativeType(t) {
@@ -266,8 +276,6 @@ window.extend = function(root) {
 
 						checkClose(key);
 						output.push('</' + key + '>');
-
-						result = true;
 					}
 					//Attr
 					else {
