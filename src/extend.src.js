@@ -18,7 +18,8 @@ window.extend = function(root) {
 
 	"use strict";
 
-	delete window.extend;
+	window.extend = null; //delete throws error on < IE9
+
 	root = root || window;
 
 	//-- Define a utility function to check undefined and object types
