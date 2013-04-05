@@ -140,7 +140,7 @@ test("type extend", function() {
 	ok(!car.parked, 'Car has started.')
 })
 
-test("type edge", function() {
+test("type (edge)", function() {
 
 	var Static = type(function() {
 		this.one = true;
@@ -232,7 +232,47 @@ test('compose', function () {
 
 	out = compose(il);
     ok(out == '<html><head><title>Test Page</title></head><body><p>Test1</p><p>Test2</p></body></html>', out);
+
+    il = {table: function() {
+	  for (var i=1; i<4; i++) this.push({tr:{td:i}});
+	}};
+
+	out = compose(il);
+	ok(out == '<table><tr><td>1</td></tr><tr><td>2</td></tr><tr><td>3</td></tr></table>', out);
 });
+
+test('compose (edge)', function() {
+ 	//Simple tag
+    var il = {div: function() {
+    	return 'hello world';
+    }};
+
+    var out = compose(il);
+    ok(out == '<div>hello world</div>', out);
+
+    il = {div: function() {
+    	this.push('hello world');
+    }};
+
+    out = compose(il);
+    ok(out == '<div>hello world</div>', out);
+
+    il = {div: function() {
+    	this.push({p:'goodbye world'});
+    }};
+
+    out = compose(il);
+    ok(out == '<div><p>goodbye world</p></div>', out);
+
+    il = {div: function() {
+    	this.push({p:'hello'});
+    	return {p:'goodbye'};
+    }};
+
+    out = compose(il);
+    ok(out == '<div><p>hello</p><p>goodbye</p></div>', out);
+
+})
 
 test('Events', function() {
 
