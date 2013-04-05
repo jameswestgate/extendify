@@ -16,6 +16,8 @@
 
 window.extend = function(root) {
 
+	"use strict";
+
 	delete window.extend;
 	root = root || window;
 
@@ -28,6 +30,7 @@ window.extend = function(root) {
 	root.extendify = function(c) {
 		
 		return function(arg) {
+
 			if (arguments.length) {
 				var t = nativeType(arg)
 
@@ -94,7 +97,6 @@ window.extend = function(root) {
 
 	//Steve Souders - http://www.stevesouders.com/blog/2010/12/06/evolution-of-script-loading/
 	//Dustin Diaz - http://www.dustindiaz.com/scriptjs/
-	
 	var loaded = []; //previously loaded scripts
 
 	root.load = function() {
@@ -154,8 +156,8 @@ window.extend = function(root) {
 
 	//-- Object Literal Microtemplating 
 	var elementTable = {}, output;
-
 	var tags = 'abipq,bbbrdddldtemh1h2h3h4h5h6hrliolrprttdthtrul,bdocoldeldfndivimginskbdmapnavpresubsupvar,abbrareabasebodycitecodeformheadhtmllinkmarkmenumetarubysampspantime,asideaudioembedinputlabelmeterparamsmalltabletbodytfoottheadtitlevideo,buttoncanvasdialogfigurefooterheaderiframelegendobjectoptionoutputscriptselectsourcestrong,addressarticlecaptioncommanddetailssection,colgroupdatagriddatalistfieldsetnoscriptoptgroupprogresstextarea,,blockquote,eventsource'.split(',');
+	
 	for(var i=1,len=tags.length; i<=len; i++) {
 		var tag=tags[i-1];
 
@@ -172,9 +174,14 @@ window.extend = function(root) {
 	};
 
 
+	//-- Multicast event callbacks
 	root.Events = type(function() {
 
 		var delegates = [];
+		var self = this;
+
+		//Store 
+		this.context = null;
 
 		//Add an event handler
 		this.on = function() {
@@ -192,7 +199,7 @@ window.extend = function(root) {
 
 			var i = delegates.length;
 			while (i--) {
-				if (arguments[0] === delegates[i][0]) {
+				if (!arguments[0] || arguments[0] === delegates[i][0]) {
 					if (!arguments[1] || arguments[1] === delegates[i][1]) delegates.splice(i,1);
 				}
 			}
@@ -201,17 +208,21 @@ window.extend = function(root) {
 		//Fires the named evet, or all events if not passed in
 		this.fire = function() {
 			var parms = [];
+			
+			//Move arguments to proper array
 			if (arguments.length > 1) {
 				for (var i=1, len=arguments.length; i<len; i++) prms.push(arguments[i]);
 			}
 			
 			for (var i=0, len=delegates.length; i<len; i++) {
-				if (!arguments[0] || arguments[0] === delegates[i][0]) delegates[i][1].apply(this, parms);
+				if (!arguments[0] || arguments[0] === delegates[i][0]) {
+					self.context = arguments[0];
+					delegates[i][1].apply(this, parms);
+					self.context = null;
+				}
 			}
 		}
-
 	});
-
 
 	//--Private functions
 	function nativeType(t) {
@@ -222,7 +233,7 @@ window.extend = function(root) {
 
 	function checkClose(key) {
 
-		if (key == null) return;
+		if (key === null) return;
 
 		if (elementTable[key].open > elementTable[key].closed) {
 			output.push('>');
@@ -237,12 +248,17 @@ window.extend = function(root) {
 
 		if (t === 'array') {
 			
-			il.forEach(function(e) {
-				parseIl(e, parent);
-			});
+			for (var i=0, len=t.length; i<len; i++) {
+				parseIl(il[i], parent);
+			};
 		}
 		else if (t === 'function') {
-			parseIl(il(), parent);
+			
+			var temp = [], result = il.apply(temp); //an array to push to and/or result to append
+			
+			if (result) temp.push(result);
+			
+			parseIl(temp, parent);
 		} 
 		else if (t === 'object') {
 			
@@ -266,8 +282,6 @@ window.extend = function(root) {
 
 						checkClose(key);
 						output.push('</' + key + '>');
-
-						result = true;
 					}
 					//Attr
 					else {
