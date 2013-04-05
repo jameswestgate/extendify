@@ -20,7 +20,7 @@ load('myLibrary.js', 'another.js', function() {
 If you prefer, extendify can be added to an object of your choice (e.g. jQuery):
 
 ```javascript
-extend(jQuery);
+extend($);
 
 alert($.compose({p:'Hello world'})); //alerts '<p>Hello world</p>'
 ```
