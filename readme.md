@@ -35,6 +35,7 @@ alert($.compose({p:'Hello world'})); //alerts 'Hello world'
 <tr><td><a href="../../wiki/compose/">compose</a></td><td>Markup creation and population using javascript object notation.</td></tr>
 <tr><td><a href="../../wiki/is/">is</a></td><td>Check for undefined, null and object type references.</td></tr>
 <tr><td><a href="../../wiki/extendify/">extendify</a></td><td>Create a function that will extend the context provided.</td></tr>
+<tr><td><a href="../../wiki/events/">Events</a></td><td>Creates an object that facilitates full multicast event support.</td></tr>
 </tbody>
 </table>
 
