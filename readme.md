@@ -32,7 +32,7 @@ Extendify makes constructor functions, prototypes, constructors and mixins a dod
 	//Outputs: Bob earns a bonus of $1500
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-	//Create a mixin using the extend. Bob joins the secret club
+	//Create a mixin using the extend method. Bob joins the secret club
 	person.extend({handshake: true, car: 'fast'});
 
 	//Outputs: Bob is in the secret club.
@@ -55,7 +55,7 @@ Extendify adds a namespace function to help organise complex code:
 	//Outputs: Your salary is now $5000.
 	if (person instanceof acme.corp.Director) 
 		console.log('Your salary is now $' + person.salary);
-		
+
 ```
 
 You can simplify the code above by using a namespace when you define a type:
