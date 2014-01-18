@@ -53,7 +53,9 @@ Extendify adds a namespace function to help organise complex code:
 	var person = new acme.corp.Director({salary: 5000});
 
 	//Outputs: Your salary is now $5000.
-	if (person instanceof acme.corp.Director) console.log('Your salary is now $' + person.salary);
+	if (person instanceof acme.corp.Director) 
+		console.log('Your salary is now $' + person.salary);
+		
 ```
 
 You can simplify the code above by using a namespace when you define a type:
@@ -65,13 +67,15 @@ You can simplify the code above by using a namespace when you define a type:
 	var person = new acme.corp.Director({salary: 5000});
 
 	//Outputs: Your salary is still $5000.
-	if (person instanceof acme.corp.Director) console.log('Your salary is still $' + person.salary);
+	if (person instanceof acme.corp.Director) 
+		console.log('Your salary is still $' + person.salary);
 	
 ```
 
 Combine the prototype and the namespace parameter:
 
 ```javascript
+
 	var Employee = type('acme.corp.Employee');
 	type(Employee, 'acme.corp.Director');
 
@@ -80,12 +84,14 @@ Combine the prototype and the namespace parameter:
 	//Outputs: You deserve it!
 	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) 
 		console.log('You deserve it!');
+
 ```
 
 You can also extend the namespace with a function to achieve a similar result. The extend method uses functions as well as objects and arrays.
 
 ```javascript
-		namespace('acme.corp').extend(function() {
+
+	namespace('acme.corp').extend(function() {
 
 		this.Employee = type();
 		this.Director = type();
@@ -96,6 +102,7 @@ You can also extend the namespace with a function to achieve a similar result. T
 		if (person instanceof acme.corp.Director) 
 			console.log('You should buy some Sex Panther!');
 	})
+
 ```
 
 **Functions**
