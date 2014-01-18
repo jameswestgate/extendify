@@ -1,7 +1,7 @@
 
 /*
 * Extendify JavaScript Mini-Framework 2.0
-* https://github.com/jameswestgate/ExtendJS
+* https://github.com/jameswestgate/extendify
 * 
 * Copyright (c) James Westgate 2014
 *
@@ -11,18 +11,19 @@
 */
 
 
-(function(context) {
-
-	//-- Extend the Object prototype 
+(function() {
 
 	//Fix javascript's broken typeof operator
-	Object.prototype['typeof'] = function() {
+	//http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
+	Object.prototype.typeof = function() {
 		
-		//return the actual type
-		if (!arguments.length) return nativeType(this);
+		//Get string representation of the type
+		var t = ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+
+		if (!arguments.length) return t;
 
 		//Return a boolean comparison
-		return nativeType(this) === arguments[0].toLowerCase();
+		return t === arguments[0].toLowerCase();
 	}
 
 	//Provide all objects with the extend function
@@ -36,7 +37,7 @@
 
 			if (!args) return;
 
-			var t = nativeType(args);
+			var t = args.typeof();
 
 			//Call the function setting invoker as context
 			if (t === 'function') {
@@ -59,7 +60,7 @@
 
 	//Returns a constructor function given a prototype
 	//Uses extend as a constructor
-	context.type = function(o, s) {
+	Object.prototype.type = function(o, s) {
 		
 		if (typeof o === 'string') s = o, o = null;
 		if (o) F.prototype = new o();
@@ -69,7 +70,7 @@
 
 			if (arr.length > 1) {
 				var name = arr.pop();
-				namespace(arr)[name] = F;
+				Object.parse(arr)[name] = F;
 			} 
 			else {
 				window[arr[0]] = F;
@@ -84,10 +85,10 @@
 	}
 
 	//Returns an object containing an existing and/or new sub objects representing a name hierarchy
-	context.namespace = function(path) {
+	Object.prototype.parse = function(path) {
 		
 		var base = window;
-		var t = nativeType(path);
+		var t = path.typeof();
 
 		//Only parse string paths 
 		if (t === 'string' || t === 'array') {
@@ -104,16 +105,9 @@
 		}
 
 		return base;
-	};
-
-
-	//Returns a string representation of the type of the value provided
-	//http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
-	function nativeType(obj) {
-		return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 	}
 
-})(this);
+})();
 
 
 
