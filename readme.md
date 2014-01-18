@@ -78,7 +78,24 @@ Combine the prototype and the namespace parameter:
 	var person = new acme.corp.Director({salary: 8000});
 
 	//Outputs: You deserve it!
-	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) console.log('You deserve it!');
+	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) 
+		console.log('You deserve it!');
+```
+
+You can also extend the namespace with a function to achieve a similar result. The extend method uses functions as well as objects and arrays.
+
+```javascript
+		namespace('acme.corp').extend(function() {
+
+		this.Employee = type();
+		this.Director = type();
+
+		var person = new this.Director({salary: 10000});
+
+		//Outputs: You should buy some Sex Panther!
+		if (person instanceof acme.corp.Director) 
+			console.log('You should buy some Sex Panther!');
+	})
 ```
 
 **Functions**

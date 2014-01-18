@@ -271,3 +271,19 @@ test("example 4", function() {
 	//Outputs: You deserve it!
 	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) console.log('You deserve it!');
 });
+
+test("example 5", function() {
+
+	expect(0);
+
+	namespace('acme.corp').extend(function() {
+
+		this.Employee = type();
+		this.Director = type();
+
+		var person = new this.Director({salary: 10000});
+
+		//Outputs: You should buy some Sex Panther!
+		if (person instanceof acme.corp.Director) console.log('You should buy some Sex Panther!');
+	})
+})
