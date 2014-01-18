@@ -200,3 +200,90 @@ test("typeof", function() {
 	ok(arguments.typeof("arguments"), 'arguments.typeof("arguments")')
 });
 
+module("documentation tests");
+
+test("example 1", function() {
+
+	expect(0);
+	
+	//Create a new constructor function named Badge
+	var Badge = type();
+
+	Badge.prototype.getBonus = function() {
+		return this.salary * 2;
+	};
+
+	//Create a Badge instance with two properties
+	var person = new Badge({name: 'John', salary: 500});
+	
+	//Outputs: John earns a bonus of $1000
+	console.log(person.name + ' earns a bonus of $' + person.getBonus());
+
+	//Create a new constructor function with a Badge as a prototype
+	var Manager = type(Badge);
+	person = new Manager({name: 'Bob', salary: 750});
+
+	//Outputs: Bob earns a bonus of $1500
+	console.log(person.name + ' earns a bonus of $' + person.getBonus());
+
+	//Create a mixin. Bob joins the secret club
+	person.extend({handshake: true, car: 'fast'});
+
+	//Outputs: Bob is in the secret club.
+	if (person instanceof Manager && person.handshake && person.car === 'fast') console.log(person.name + ' is in the secret club.');
+});
+
+test("example 2", function() {
+	
+	expect(0);
+
+	//Create a namespace
+	namespace('acme.corp');
+	acme.corp.Director = type();
+
+	var person = new acme.corp.Director({salary: 5000});
+
+	//Outputs: Your salary is now $5000.
+	if (person instanceof acme.corp.Director) console.log('Your salary is now $' + person.salary);
+});
+
+test("example 3", function() {
+
+	expect(0);
+	
+	type('acme.corp.Director');
+
+	var person = new acme.corp.Director({salary: 5000});
+
+	//Outputs: Your salary is still $5000.
+	if (person instanceof acme.corp.Director) console.log('Your salary is still $' + person.salary);
+});
+
+test("example 4", function() {
+
+	expect(0);
+	
+	var Employee = type('acme.corp.Employee');
+	type(Employee, 'acme.corp.Director');
+
+	var person = new acme.corp.Director({salary: 8000});
+
+	//Outputs: You deserve it!
+	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) console.log('You deserve it!');
+});
+
+test("example 5", function() {
+
+	expect(0);
+
+	namespace('acme.corp').extend(function() {
+
+		this.Employee = type();
+		this.Director = type();
+
+		var person = new this.Director({salary: 10000});
+
+		//Outputs: You should buy some Sex Panther!
+		if (person instanceof acme.corp.Director) console.log('You should buy some Sex Panther!');
+	})
+})
