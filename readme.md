@@ -2,7 +2,7 @@ Super lightweight namespacing, object creation and type handling. Extendify's go
 
 **Getting Started**
 
-Extendify was created to make constructor functions, prototypes, constructors and mixins simple. Every object can use the _Object.extend_ method and each object created via _Object.type_ uses _Object.extend_ internally as a constructor:
+Extendify was created to make constructor functions, prototypes, constructors and mixins simple:
 
 ```javascript
 
@@ -34,6 +34,8 @@ Extendify was created to make constructor functions, prototypes, constructors an
 		console.log(person.name + ' is in the secret club.');
 
 ```
+
+Every object can use the _Object.extend_ method and each object created via _Object.type_ uses _Object.extend_ internally as a constructor.
 
 Extendify adds a namespacing function _Object.parse_ to create structures that organise complex code:
 
@@ -70,6 +72,8 @@ You can simplify the code above by creating a namespace when you define a type:
 	
 ```
 
+The last item in the namespace is used by the _Object.type_ function to name the new function.
+
 You can combine the prototype and the namespace parameters:
 
 ```javascript
@@ -87,8 +91,7 @@ You can combine the prototype and the namespace parameters:
 
 ```
 
-You can also extend the namespace with a function to achieve a similar result. 
-The extend method accepts a function as well as objects and arrays:
+You can also extend the namespace with a function to achieve a similar result, the extend method accepts a function as well as objects and arrays:
 
 ```javascript
 
