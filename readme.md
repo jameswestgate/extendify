@@ -1,4 +1,4 @@
-Super lightweight namespacing, object creation and type handling. Extendify's goal is to be lean and mean but surprisingly functional. Supports IE8+ and all modern browsers.
+Extendify is a personal project created to simplify namespacing, object creation and type handling in Javascript. Extendify's goal is to be lean and mean but surprisingly functional. Supports IE8+ and all modern browsers.
 
 **Getting Started**
 
