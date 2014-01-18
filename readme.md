@@ -41,8 +41,11 @@ Extendify adds a namespacing function _Object.parse_ to create structures that o
 
 	//Create a namespace
 	Object.parse('acme.corp');
+
+	//Create the Director type in the new namespace
 	acme.corp.Director = Object.type();
 
+	//Create an instance of Director
 	var person = new acme.corp.Director({salary: 5000});
 
 	//Outputs: Your salary is now $5000.
@@ -55,8 +58,10 @@ You can simplify the code above by creating a namespace when you define a type:
 
 ```javascript
 
+	//Create a Director type in a new acme.corp namespace
 	Object.type('acme.corp.Director');
 
+	//Create an instance of Director
 	var person = new acme.corp.Director({salary: 5000});
 
 	//Outputs: Your salary is still $5000.
@@ -68,10 +73,12 @@ You can simplify the code above by creating a namespace when you define a type:
 You can combine the prototype and the namespace parameters:
 
 ```javascript
-
+	
+	//Create an Employee and Director type in a namespace
 	var Employee = Object.type('acme.corp.Employee');
 	Object.type(Employee, 'acme.corp.Director');
 
+	//Create a director instance
 	var person = new acme.corp.Director({salary: 8000});
 
 	//Outputs: You deserve it!
@@ -85,11 +92,15 @@ The extend method accepts a function as well as objects and arrays:
 
 ```javascript
 
+	//Create a namespace and extend it with some types
 	Object.parse('acme.corp').extend(function() {
 
+		//Create the Employee and Director types in this namespace
+		//An instance of Employee will be created as the prototype for a Director
 		this.Employee = Object.type();
 		this.Director = Object.type(this.Employee);
 
+		//Create an instance of a Director
 		var person = new this.Director({salary: 10000});
 
 		//Outputs: You should buy some Sex Panther!
