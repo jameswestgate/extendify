@@ -59,9 +59,23 @@
 
 	//Returns a constructor function given a prototype
 	//Uses extend as a constructor
-	context.type = function(o) {
+	context.type = function(o, s) {
 		
+		if (typeof o === 'string') s = o, o = null;
 		if (o) F.prototype = new o();
+		
+		if (s) {	
+			var arr = s.split('.');
+
+			if (arr.length > 1) {
+				var name = arr.pop();
+				namespace(arr)[name] = F;
+			} 
+			else {
+				window[arr[0]] = F;
+			}
+		}
+
 		return F;
 
 		function F(){
@@ -73,11 +87,12 @@
 	context.namespace = function(path) {
 		
 		var base = window;
+		var t = nativeType(path);
 
 		//Only parse string paths 
-		if (typeof path === 'string') {
+		if (t === 'string' || t === 'array') {
 
-			var spaces = path.split('.');
+			var spaces = (t === 'string') ? path.split('.') : path;
 
 			//Set up the namespace objects
 			for (var i=0, len=spaces.length; i<len; i++) {

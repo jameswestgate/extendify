@@ -34,12 +34,12 @@ Fix javascript's broken typeof operator along the way.
 <tbody>
 <tr><td><a href="../../wiki/namespace/">namespace</a></td><td>Create a namespace hierarchy with ease.</td></tr>
 <tr><td><a href="../../wiki/type/">type</a></td><td>Define a function constructor with an optional prototype.</td></tr>
-<tr><td><a href="../../wiki/typeof/">object.typeof</a></td><td>Check for arrays, functions and a host of other types.</td></tr>
-<tr><td><a href="../../wiki/extend/">object.extend</a></td><td>Copy members to the current object by providing an object, function or array </td></tr>
+<tr><td><a href="../../wiki/typeof/">typeof</a></td><td>Check for arrays, functions and a host of other types.</td></tr>
+<tr><td><a href="../../wiki/extend/">extend</a></td><td>Copy members to the current object by providing an object, function or array </td></tr>
 </tbody>
 </table>
 
 
 **Unit Tests**
 
-Click <a href="http://jameswestgate.github.com/extendify/test/" target="_blank">here</a> to execute the latest unit tests.
+Click <a href="http://jameswestgate.github.io/extendify/test/" target="_blank">here</a> to execute the latest unit tests.

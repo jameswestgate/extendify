@@ -43,9 +43,15 @@ test("namespace extend", function() {
 	ok(system.data.parent, 'parent object value set');
 })
 
+test("namespace edge", function() {
+	
+	var space1 = namespace('system.data'.split('.'));
+
+	ok(system.data, 'array parameter is correct');
+})
+
 
 module("type tests");
-
 
 test("type", function() {
 
@@ -157,6 +163,26 @@ test("type (edge)", function() {
 	ok (stat.five(), "five is true");
 })
 
+test("type (namespace)", function() {
+
+	var Cat = type('animals.felines.Cat');
+	var Tiger = type(Cat, 'animals.felines.Tiger');
+
+	var mowgli = new Tiger({growl: true});
+
+	ok(animals.felines, 'animal and felines namespace created');
+	ok(typeof animals.felines.Cat === 'function', 'Cat function created');
+	ok(typeof animals.felines.Tiger === 'function', 'Tiger function created');
+
+	ok(mowgli instanceof animals.felines.Cat, 'Mowgli is a Cat instance');
+	ok(mowgli instanceof animals.felines.Tiger, 'Mowgli is a Tiger instance');
+	ok(mowgli.growl, 'Mowgli can growl')
+
+	var Sex = type('Panther');
+	ok(window.Panther && Sex === Panther , 'Sex panther. 60% of the time, it works every time.')
+});
+
+
 module("typeof tests");
 
 test("typeof", function() {
@@ -172,6 +198,5 @@ test("typeof", function() {
 	ok(new String("abc").typeof("string"))
 	ok(new Boolean(true).typeof("boolean"))
 	ok(arguments.typeof("arguments"), 'arguments.typeof("arguments")')
-
 });
 
