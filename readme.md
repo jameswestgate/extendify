@@ -1,15 +1,13 @@
-Super lightweight namespacing, constructor functions and object creation, and type handling. Extendify your javascript. 
-
-Extendify will always be a minimal library - surprisingly functional - but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE6+.
+Super lightweight namespacing, object creation and type handling. Extendify will always be a minimal library - surprisingly functional - but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE8+ and all modern browsers
 
 **Getting Started**
 
-Extendify makes constructor functions, prototypes, constructors and mixins a doddle. 
+Extendify makes constructor functions, prototypes, constructors and mixins a doddle. Each object can use the _extend_ method and each object created via _type uses _extend_ as a constructor:
 
 ```javascript
 
 	//Create a new constructor function named Badge
-	var Badge = type();
+	var Badge = Object.type();
 
 	Badge.prototype.getBonus = function() {
 		return this.salary * 2;
@@ -21,32 +19,29 @@ Extendify makes constructor functions, prototypes, constructors and mixins a dod
 	//Outputs: John earns a bonus of $1000
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-	//Create a new Manager constructor function with a Badge as a prototype
-	var Manager = type(Badge);
-
-	//Create a manager instance. Extend the instance with two properties
+	//Create a new constructor function with a Badge as a prototype
+	var Manager = Object.type(Badge);
 	person = new Manager({name: 'Bob', salary: 750});
 
 	//Outputs: Bob earns a bonus of $1500
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-	//Create a mixin using the extend method. Bob joins the secret club
+	//Create a mixin at anytime. Bob joins the secret club
 	person.extend({handshake: true, car: 'fast'});
 
 	//Outputs: Bob is in the secret club.
-	if (person instanceof Manager && person.handshake && person.car === 'fast') 
+	if (person instanceof Manager && person.handshake && person.car === 'fast')
 		console.log(person.name + ' is in the secret club.');
 
 ```
-Each object can  use the _extend_ method. It is also used as the constructor when creating instances of functions created with _type_;
 
-Extendify adds a namespace function to help organise complex code:
+Extendify adds a namespacing function named _parse_ to help organise complex code:
 
 ```javascript
 
 	//Create a namespace
-	namespace('acme.corp');
-	acme.corp.Director = type();
+	Object.parse('acme.corp');
+	acme.corp.Director = Object.type();
 
 	var person = new acme.corp.Director({salary: 5000});
 
@@ -56,26 +51,26 @@ Extendify adds a namespace function to help organise complex code:
 
 ```
 
-You can simplify the code above by using a namespace when you define a type:
+You can simplify the code above by create a namespace when you define a type:
 
 ```javascript
 
-	type('acme.corp.Director');
+	Object.type('acme.corp.Director');
 
 	var person = new acme.corp.Director({salary: 5000});
 
 	//Outputs: Your salary is still $5000.
-	if (person instanceof acme.corp.Director) 
+	if (person instanceof acme.corp.Director)
 		console.log('Your salary is still $' + person.salary);
 	
 ```
 
-Combine the prototype and the namespace parameter:
+You can combine the prototype and the namespace parameter. The last value will be used to name the _type_ function.
 
 ```javascript
 
-	var Employee = type('acme.corp.Employee');
-	type(Employee, 'acme.corp.Director');
+	var Employee = Object.type('acme.corp.Employee');
+	Object.type(Employee, 'acme.corp.Director');
 
 	var person = new acme.corp.Director({salary: 8000});
 
@@ -89,15 +84,15 @@ You can also extend the namespace with a function to achieve a similar result. T
 
 ```javascript
 
-	namespace('acme.corp').extend(function() {
+	Object.parse('acme.corp').extend(function() {
 
-		this.Employee = type();
-		this.Director = type();
+		this.Employee = Object.type();
+		this.Director = Object.type(this.Employee);
 
 		var person = new this.Director({salary: 10000});
 
 		//Outputs: You should buy some Sex Panther!
-		if (person instanceof acme.corp.Director) 
+		if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) 
 			console.log('You should buy some Sex Panther!');
 	})
 
@@ -107,10 +102,11 @@ You can also extend the namespace with a function to achieve a similar result. T
 
 <table>
 <tbody>
-<tr><td><a href="../../wiki/namespace/">namespace</a></td><td>Create a namespace hierarchy with ease.</td></tr>
-<tr><td><a href="../../wiki/type/">type</a></td><td>Define a function constructor with an optional prototype.</td></tr>
-<tr><td><a href="../../wiki/extend/">extend</a></td><td>Copy members to the current object by providing an object, function or array</td></tr>
-<tr><td><a href="../../wiki/typeof/">typeof</a></td><td>Check for arrays, functions and other types.</td></tr>
+
+<tr><td><a href="../../wiki/type/">Object.type</a></td><td>Define a function constructor with an optional prototype.</td></tr>
+<tr><td><a href="../../wiki/parse/">Object.parse</a></td><td>Create a namespace hierarchy from a string representation.</td></tr>
+<tr><td><a href="../../wiki/extend/">Object.extend</a></td><td>Copy members to the current object by providing an object, function or array</td></tr>
+<tr><td><a href="../../wiki/typeof/">Object.typeof</a></td><td>Check for arrays, functions and other types.</td></tr>
 </tbody>
 </table>
 

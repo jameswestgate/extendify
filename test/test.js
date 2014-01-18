@@ -2,34 +2,33 @@ module("namespace tests");
 
 test("namespace", function() {
 
-	ok(typeof window.namespace != 'undefined', 'namespace function created');
+	ok(typeof Object.parse != 'undefined', 'namespace function created');
 
-	ok(typeof namespace != 'undefined', 'global namespace function created')
 
-	var space1 = namespace('alpha');
+	var space1 = Object.parse('alpha');
 	ok(window.alpha != null, 'alpha namespace created');
 	ok(window.alpha === space1, 'alpha namespace returned');
 
-	var space2 = namespace('alpha.beta');
+	var space2 = Object.parse('alpha.beta');
 	ok(window.alpha.beta != null, 'beta namespace created');
 	ok(window.alpha.beta === space2, 'beta namespace returned');
 
-	var space3 = namespace('alpha.beta.charlie');
+	var space3 = Object.parse('alpha.beta.charlie');
 	ok(window.alpha.beta.charlie != null, 'charlie namespace created');
 	ok(window.alpha.beta.charlie === space3, 'charlie namespace returned');
 
-	var space4 = namespace('delta.echo');
+	var space4 = Object.parse('delta.echo');
 	ok(window.delta != null, 'delta namespace created');
 	ok(window.delta.echo != null, 'echo namespace created');
 	ok(window.delta.echo === space4, 'echo namespace returned');
 
-	var space5 = namespace(window.alpha);
+	var space5 = Object.parse(window.alpha);
 	ok(window.alpha === space5, 'alpha object namespace returned');
 });
 
 test("namespace extend", function() {
 	
-	var space1 = namespace('system.data');
+	var space1 = Object.parse('system.data');
 
 	space1.extend(function() {
         this.customer = {age:37};
@@ -45,7 +44,7 @@ test("namespace extend", function() {
 
 test("namespace edge", function() {
 	
-	var space1 = namespace('system.data'.split('.'));
+	var space1 = Object.parse('system.data'.split('.'));
 
 	ok(system.data, 'array parameter is correct');
 })
@@ -56,8 +55,8 @@ module("type tests");
 test("type", function() {
 
 	//Test definitions
-	var Person = type();
-	var Employee = type(Person);
+	var Person = Object.type();
+	var Employee = Object.type(Person);
 
 	Employee.prototype.extend(function(){
 		this.getBonus = function() {
@@ -65,7 +64,7 @@ test("type", function() {
 		}
 	});
 
-	var Director = type(Employee);
+	var Director = Object.type(Employee);
 
 	Director.prototype.extend(function() {
 		this.getBonus = function() {
@@ -108,7 +107,7 @@ test("type", function() {
 test("type extend", function() {
 
 	//Anonymous prototype
-	var Car = type(function() {
+	var Car = Object.type(function() {
 		this.wheels = 4;
 	});
 
@@ -130,7 +129,7 @@ test("type extend", function() {
 test("type (edge)", function() {
 
 	//Create a type with an object literal prototype
-	var Static = type(function() {
+	var Static = Object.type(function() {
 		this.one = true;
 	});
 
@@ -165,8 +164,8 @@ test("type (edge)", function() {
 
 test("type (namespace)", function() {
 
-	var Cat = type('animals.felines.Cat');
-	var Tiger = type(Cat, 'animals.felines.Tiger');
+	var Cat = Object.type('animals.felines.Cat');
+	var Tiger = Object.type(Cat, 'animals.felines.Tiger');
 
 	var mowgli = new Tiger({growl: true});
 
@@ -178,7 +177,7 @@ test("type (namespace)", function() {
 	ok(mowgli instanceof animals.felines.Tiger, 'Mowgli is a Tiger instance');
 	ok(mowgli.growl, 'Mowgli can growl')
 
-	var Sex = type('Panther');
+	var Sex = Object.type('Panther');
 	ok(window.Panther && Sex === Panther , 'Sex panther. 60% of the time, it works every time.')
 });
 
@@ -207,7 +206,7 @@ test("example 1", function() {
 	expect(0);
 	
 	//Create a new constructor function named Badge
-	var Badge = type();
+	var Badge = Object.type();
 
 	Badge.prototype.getBonus = function() {
 		return this.salary * 2;
@@ -220,7 +219,7 @@ test("example 1", function() {
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
 	//Create a new constructor function with a Badge as a prototype
-	var Manager = type(Badge);
+	var Manager = Object.type(Badge);
 	person = new Manager({name: 'Bob', salary: 750});
 
 	//Outputs: Bob earns a bonus of $1500
@@ -238,8 +237,8 @@ test("example 2", function() {
 	expect(0);
 
 	//Create a namespace
-	namespace('acme.corp');
-	acme.corp.Director = type();
+	Object.parse('acme.corp');
+	acme.corp.Director = Object.type();
 
 	var person = new acme.corp.Director({salary: 5000});
 
@@ -251,7 +250,7 @@ test("example 3", function() {
 
 	expect(0);
 	
-	type('acme.corp.Director');
+	Object.type('acme.corp.Director');
 
 	var person = new acme.corp.Director({salary: 5000});
 
@@ -263,8 +262,8 @@ test("example 4", function() {
 
 	expect(0);
 	
-	var Employee = type('acme.corp.Employee');
-	type(Employee, 'acme.corp.Director');
+	var Employee = Object.type('acme.corp.Employee');
+	Object.type(Employee, 'acme.corp.Director');
 
 	var person = new acme.corp.Director({salary: 8000});
 
@@ -276,14 +275,14 @@ test("example 5", function() {
 
 	expect(0);
 
-	namespace('acme.corp').extend(function() {
+	Object.parse('acme.corp').extend(function() {
 
-		this.Employee = type();
-		this.Director = type();
+		this.Employee = Object.type();
+		this.Director = Object.type(this.Employee);
 
 		var person = new this.Director({salary: 10000});
 
 		//Outputs: You should buy some Sex Panther!
-		if (person instanceof acme.corp.Director) console.log('You should buy some Sex Panther!');
+		if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) console.log('You should buy some Sex Panther!');
 	})
 })
