@@ -1,4 +1,4 @@
-Super lightweight namespacing, object creation and type handling. Extendify will always be a minimal library, surprisingly functional, but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE8+ and all modern browsers.
+Super lightweight namespacing, object creation and type handling. Extendify's goal is to be lean and mean but surprisingly functional.Supports IE8+ and all modern browsers.
 
 **Getting Started**
 
