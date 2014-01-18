@@ -1,8 +1,8 @@
-Super lightweight namespacing, object creation and type handling. Extendify's goal is to be lean and mean but surprisingly functional.Supports IE8+ and all modern browsers.
+Super lightweight namespacing, object creation and type handling. Extendify's goal is to be lean and mean but surprisingly functional. Supports IE8+ and all modern browsers.
 
 **Getting Started**
 
-Extendify makes constructor functions, prototypes, constructors and mixins simple. Each object can use the _extend_ method and each object created via _Object.type_ uses _extend_ as a constructor:
+Extendify was created to make constructor functions, prototypes, constructors and mixins simple. Every object can use the _extend_ method and each object created via _Object.type_ uses _extend_ internally as a constructor:
 
 ```javascript
 
