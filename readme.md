@@ -98,17 +98,17 @@ You can also extend the namespace with a function to achieve a similar result, t
 //Create a namespace and extend it with some types
 Object.parse('acme.corp').extend(function() {
 
-//Create the Employee and Director types in this namespace
-//An instance of Employee will be created as the prototype for a Director
-this.Employee = Object.type();
-this.Director = Object.type(this.Employee);
+	//Create the Employee and Director types in this namespace
+	//An instance of Employee will be created as the prototype for a Director
+	this.Employee = Object.type();
+	this.Director = Object.type(this.Employee);
 
-//Create an instance of a Director
-var person = new this.Director({salary: 10000});
+	//Create an instance of a Director
+	var person = new this.Director({salary: 10000});
 
-//Outputs: You should buy some Sex Panther!
-if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) 
-	console.log('You should buy some Sex Panther!');
+	//Outputs: You should buy some Sex Panther!
+	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) 
+		console.log('You should buy some Sex Panther!');
 })
 
 ```
