@@ -2,8 +2,6 @@ Super lightweight namespacing, constructor functions and object creation, and ty
 
 Extendify will always be a minimal library - surprisingly functional - but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE6+.
 
-###API Documentation Version 2.0
-
 **Getting Started**
 
 Extendify makes constructor functions, prototypes, constructors and mixins a doddle. 
