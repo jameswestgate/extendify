@@ -6,7 +6,7 @@ Extendify will always be a minimal library - surprisingly functional - but lean 
 
 **Getting Started**
 
-Extendify makes constructor functions, prototypes, constructors and mixins a doddle.
+Extendify makes constructor functions, prototypes, constructors and mixins a doddle. 
 
 ```javascript
 
@@ -23,21 +23,63 @@ Extendify makes constructor functions, prototypes, constructors and mixins a dod
 	//Outputs: John earns a bonus of $1000
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-	//Create a new constructor function with a Badge as a prototype
+	//Create a new Manager constructor function with a Badge as a prototype
 	var Manager = type(Badge);
+
+	//Create a manager instance. Extend the instance with two properties
 	person = new Manager({name: 'Bob', salary: 750});
 
 	//Outputs: Bob earns a bonus of $1500
 	console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-	//Create a mixin. Bob joins the secret club
+	//Create a mixin using the extend. Bob joins the secret club
 	person.extend({handshake: true, car: 'fast'});
 
 	//Outputs: Bob is in the secret club.
-	if (person instanceof Manager && person.handshake && person.car === 'fast') console.log(person.name + ' is in the secret club.');
+	if (person instanceof Manager && person.handshake && person.car === 'fast') 
+		console.log(person.name + ' is in the secret club.');
 
 ```
+Each object can  use the _extend_ method. It is also used as the constructor when creating instances of functions created with _type_;
 
+Extendify adds a namespace function to help organise complex code:
+
+```javascript
+
+	//Create a namespace
+	namespace('acme.corp');
+	acme.corp.Director = type();
+
+	var person = new acme.corp.Director({salary: 5000});
+
+	//Outputs: Your salary is now $5000.
+	if (person instanceof acme.corp.Director) console.log('Your salary is now $' + person.salary);
+```
+
+You can simplify the code above by using a namespace when you define a type:
+
+```javascript
+
+	type('acme.corp.Director');
+
+	var person = new acme.corp.Director({salary: 5000});
+
+	//Outputs: Your salary is still $5000.
+	if (person instanceof acme.corp.Director) console.log('Your salary is still $' + person.salary);
+	
+```
+
+Combine the prototype and the namespace parameter:
+
+```javascript
+	var Employee = type('acme.corp.Employee');
+	type(Employee, 'acme.corp.Director');
+
+	var person = new acme.corp.Director({salary: 8000});
+
+	//Outputs: You deserve it!
+	if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director) console.log('You deserve it!');
+```
 
 **Functions**
 
