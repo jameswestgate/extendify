@@ -1,8 +1,8 @@
-Super lightweight namespacing, object creation and type handling. Extendify will always be a minimal library - surprisingly functional - but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE8+ and all modern browsers
+Super lightweight namespacing, object creation and type handling. Extendify will always be a minimal library, surprisingly functional, but lean and mean. We pledge never to exceed 1k minified and gzipped. Supports IE8+ and all modern browsers.
 
 **Getting Started**
 
-Extendify makes constructor functions, prototypes, constructors and mixins a doddle. Each object can use the _extend_ method and each object created via _type uses _extend_ as a constructor:
+Extendify makes constructor functions, prototypes, constructors and mixins simple. Each object can use the _extend_ method and each object created via _Object.type_ uses _extend_ as a constructor:
 
 ```javascript
 
@@ -35,7 +35,7 @@ Extendify makes constructor functions, prototypes, constructors and mixins a dod
 
 ```
 
-Extendify adds a namespacing function named _parse_ to help organise complex code:
+Extendify adds a namespacing function named _parse_ to create structures that organise complex code:
 
 ```javascript
 
@@ -80,7 +80,7 @@ You can combine the prototype and the namespace parameter. The last value will b
 
 ```
 
-You can also extend the namespace with a function to achieve a similar result. The extend method uses functions as well as objects and arrays.
+You can also extend the namespace with a function to achieve a similar result. The extend method accepts a function as well as objects and arrays:
 
 ```javascript
 
