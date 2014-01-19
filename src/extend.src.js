@@ -15,7 +15,7 @@
 
 	//Fix javascript's broken typeof operator
 	//http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
-	Object.prototype.typeof = function() {
+	Object.prototype.getType = function() {
 		
 		//Get string representation of the type
 		var t = ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -37,7 +37,7 @@
 
 			if (!args) return;
 
-			var t = args.typeof();
+			var t = args.getType();
 
 			//Call the function setting invoker as context
 			if (t === 'function') {
@@ -56,8 +56,6 @@
 		}
 	}
 	
-	//--- Add utility functions to the context supplied
-
 	//Returns a constructor function given a prototype
 	//Uses extend as a constructor
 	Object.prototype.type = function(o, s) {
@@ -88,7 +86,7 @@
 	Object.prototype.parse = function(path) {
 		
 		var base = window;
-		var t = path.typeof();
+		var t = path.getType();
 
 		//Only parse string paths 
 		if (t === 'string' || t === 'array') {

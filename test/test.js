@@ -185,18 +185,18 @@ test("type (namespace)", function() {
 module("typeof tests");
 
 test("typeof", function() {
-	
-	ok({a: 4}.typeof("object"), '{a: 4}.typeof("object")');
-	ok([1, 2, 3].typeof("array"), '[1, 2, 3].typeof("array")');
-	ok(new ReferenceError().typeof("error"), 'new ReferenceError().typeof("error")');
-	ok(new Date().typeof("date"), 'new Date().typeof("date")');
-	ok(/a-z/.typeof("regexp"), '/a-z/.typeof("regexp")');
-	ok(Math.typeof("math"));
-	ok(JSON.typeof("json"));
-	ok(new Number(4).typeof("number"));
-	ok(new String("abc").typeof("string"))
-	ok(new Boolean(true).typeof("boolean"))
-	ok(arguments.typeof("arguments"), 'arguments.typeof("arguments")')
+
+	ok({a: 4}.getType("object"), '{a: 4}.getType("object")');
+	ok([1, 2, 3].getType("array"), '[1, 2, 3].getType("array")');
+	ok(new ReferenceError().getType("error"), 'new ReferenceError().getType("error")');
+	ok(new Date().getType("date"), 'new Date().getType("date")');
+	ok(/a-z/.getType("regexp"), '/a-z/.getType("regexp")');
+	ok(Math.getType("math"));
+	ok(JSON.getType("json"));
+	ok(new Number(4).getType("number"));
+	ok(new String("abc").getType("string"))
+	ok(new Boolean(true).getType("boolean"))
+	ok(arguments.getType("arguments"), 'arguments.getType("arguments")')
 });
 
 module("documentation tests");
