@@ -74,7 +74,7 @@ if (person instanceof acme.corp.Director)
 
 The last item in the namespace is used by the _Object.type_ function to name the new function.
 
-You can combine the prototype and the namespace parameters:
+You can combine the prototype function and the namespace parameters:
 
 ```javascript
 	
@@ -91,7 +91,7 @@ if (person instanceof acme.corp.Employee && person instanceof acme.corp.Director
 
 ```
 
-You can also extend the namespace with a function to achieve a similar result, the extend method accepts a function as well as objects and arrays:
+Extend namespaces with a function to achieve similar results. The _extend_ method accepts a function as well as objects and arrays:
 
 ```javascript
 
