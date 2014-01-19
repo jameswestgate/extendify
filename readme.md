@@ -118,9 +118,9 @@ Object.parse('acme.corp').extend(function() {
 <table>
 <tbody>
 
-<tr><td><a href="../../wiki/Object.type/">Object.type</a></td><td>Define a function constructor with an optional prototype.</td></tr>
+<tr><td><a href="../../wiki/Object.type/">Object.type</a></td><td>Define a function constructor with an optional prototype function.</td></tr>
 <tr><td><a href="../../wiki/Object.parse/">Object.parse</a></td><td>Create a namespace hierarchy from a string representation.</td></tr>
-<tr><td><a href="../../wiki/Object.extend/">Object.extend</a></td><td>Copy members to the current object by providing an object, function or array</td></tr>
+<tr><td><a href="../../wiki/Object.extend/">Object.extend</a></td><td>Copy members to the current object by providing an object, function or array.</td></tr>
 <tr><td><a href="../../wiki/Object.getType/">Object.getType</a></td><td>Check for arrays, functions and other types.</td></tr>
 </tbody>
 </table>
