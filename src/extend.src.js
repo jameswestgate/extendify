@@ -56,9 +56,9 @@
 		}
 	}
 	
-	//Returns a constructor function given a prototype
+	//Returns a constructor function given an optional prototype function
 	//Uses extend as a constructor
-	Object.prototype.type = function(o, s) {
+	Object.type = function(o, s) {
 		
 		if (typeof o === 'string') s = o, o = null;
 		if (o) F.prototype = new o();
@@ -82,8 +82,8 @@
 		}
 	}
 
-	//Returns an object containing an existing and/or new sub objects representing a name hierarchy
-	Object.prototype.parse = function(path) {
+	//Returns an object containing an existing and/or new sub objects representing a named hierarchy
+	Object.parse = function(path) {
 		
 		var base = window;
 		var t = path.getType();

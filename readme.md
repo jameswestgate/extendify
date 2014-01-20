@@ -19,7 +19,7 @@ var person = new Badge({name: 'John', salary: 500});
 //Outputs: John earns a bonus of $1000
 console.log(person.name + ' earns a bonus of $' + person.getBonus());
 
-//Create a new constructor function with a Badge as a prototype
+//Create a new constructor function with a Badge as a prototype function
 var Manager = Object.type(Badge);
 person = new Manager({name: 'Bob', salary: 750});
 
@@ -112,6 +112,9 @@ Object.parse('acme.corp').extend(function() {
 })
 
 ```
+
+The benefit to this pattern is that you only need define the namespace once (before the enclosing function).
+
 
 **Functions**
 
